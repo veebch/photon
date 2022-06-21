@@ -4,6 +4,12 @@
 
 An open-source light-meter that reproduces the functionality of expensive tools, using a few inexpensive parts.
 
+
+# Background
+
+An incident light-meter is an essential tool in photography. The sophisticated computation baked-in to modern cameras devotes a lot of effort guessing 'how much light is falling on the subject?". If you have the option of getting to the subject and taking a reading, everything becomes a lot easier.
+
+
 # Hardware
 
 - A Pi Pico. The people at Pimoroni have `uf2` files for the Pico that has all the modules you'll need
