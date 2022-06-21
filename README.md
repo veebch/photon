@@ -3,3 +3,10 @@
 # Incident
 
 An open-source light-meter that reproduces the functionality of expensive tools, using a few inexpensive parts.
+
+# Hardware
+
+- A Pi Pico. The people at Pimoroni have `uf2` files for the Pico that has all the modules you'll need.
+- A Pimoroni BH1745 Luminance and Colour Sensor Breakout
+- A Rotarty Encoder
+- An OLED Screen
