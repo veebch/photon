@@ -14,5 +14,5 @@ An incident light-meter is an essential tool in photography. The sophisticated c
 
 - A Pi Pico. The people at Pimoroni have `uf2` files for the Pico that has all the modules you'll need
 - A Pimoroni BH1745 Luminance and Colour Sensor Breakout
-- A Rotarty Encoder
+- A Rotary Encoder
 - An OLED Screen
