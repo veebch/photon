@@ -16,3 +16,5 @@ An incident light-meter is an essential tool in photography. The sophisticated c
 - A Pimoroni BH1745 Luminance and Colour Sensor Breakout
 - A Rotary Encoder
 - An OLED Screen
+- A Case
+- A Battery
