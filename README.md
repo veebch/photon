@@ -2,7 +2,7 @@
 
 # Incident
 
-An open-source light-meter that reproduces the functionality of expensive tools, using a few inexpensive parts.
+An open-source light-meter that reproduces the functionality of expensive tools, using a few inexpensive parts. There is a whisper of soldering involved in this but don't let that put you off.
 
 
 # Background
@@ -12,9 +12,8 @@ An incident light-meter is an essential tool in photography. The sophisticated c
 
 # Hardware
 
-- A Pi Pico. The people at Pimoroni have `uf2` files for the Pico that has all the modules you'll need
-- A Pimoroni BH1745 Luminance and Colour Sensor Breakout
-- A Rotary Encoder
-- An OLED Screen
+- A Pi Pico
+- A Rotary Encoder    
+- A Photodiode        (fast and accurate measurement)
 - A Case
 - A Battery
