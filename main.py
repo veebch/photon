@@ -1,4 +1,4 @@
-# main.py - a script for making a tlight meter, running using a Raspberry Pi Pico
+# main.py - a script for making a light meter, running using a Raspberry Pi Pico
 # First prototype is using an OLED, rotary encoder and a photodiode
 # The display uses drivers made by Peter Hinch [link](https://github.com/peterhinch/micropython-nano-gui)
 
