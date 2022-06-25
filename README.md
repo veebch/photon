@@ -18,4 +18,4 @@ An incident light-meter is an essential tool in photography. The sophisticated c
 - A Photodiode                  (fast and accurate measurement in case we end up writing code that is clever enough to measure studio flash)
 - A Case              
 - A LiPo Battery
-- A Roll-on Deoderant bottle
+- A roll-on Deodorant bottle
