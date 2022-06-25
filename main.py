@@ -10,7 +10,7 @@ import gui.fonts.quantico40 as quantico40
 from gui.core.writer import CWriter
 from gui.core.nanogui import refresh
 import utime
-from machine import Pin,I2C, SPI
+from machine import Pin,I2C, SPI,ADC
 from rp2 import PIO, StateMachine, asm_pio
 import sys
 import math
@@ -37,9 +37,9 @@ gc.collect()  # Precaution before instantiating framebuf
 ssd = SSD(spi, pcs, pdc, prst, height)  # Create a display instance
 ssd.fill(0)
 
-wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(100,100,100),bgcolor=0)
+wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(255,255,255),bgcolor=0)
 CWriter.set_textpos(ssd, 45,51)
-wri.printstring(':-)')
+wri.printstring('Light')
 CWriter.set_textpos(ssd, 90,25)
 wri.printstring('veeb.ch/')
 
@@ -102,7 +102,7 @@ def encoder(pin):
     # update the last state of outA pin / CLK pin with the current state
     outA_last = outA_current
     counter=min(90,counter)
-    counter=max(45,counter)
+    counter=max(0,counter)
     return(counter)
     
 
@@ -111,12 +111,9 @@ def button(pin):
     # get global variable
     global button_last_state
     global button_current_state
-    global powerup
     if button_current_state != button_last_state:
         utime.sleep(.2)       
         button_last_state = button_current_state
-#        powerup = not powerup                    # Toggle power flag - disabled for now
-        print('power:'+str(powerup))
     return
 
 # Screen to display on OLED during heating
@@ -125,14 +122,14 @@ def displaynum(num,temperature):
     #100 increments?
     delta=num-temperature
     text=SSD.rgb(0,255,0)
-    if abs(delta)>=1:
-        text=SSD.rgb(255,0,0)
     wri = CWriter(ssd,quantico40, fgcolor=text,bgcolor=0)
     CWriter.set_textpos(ssd, 35,0)  # verbose = False to suppress console output
     wri.printstring(str("{:.1f}".format(num))+" ")
     wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(255,255,255),bgcolor=0)
     CWriter.set_textpos(ssd, 90,0)  
-    wrimem.printstring('actual: '+str("{:.1f}".format(temperature))+" C ")
+    wrimem.printstring(str("{:.1f}".format(temperature)))
+    CWriter.set_textpos(ssd,105,70)  
+    wrimem.printstring("iso:64")
     
     ssd.show()
     return
@@ -164,7 +161,7 @@ switch.irq(trigger = Pin.IRQ_FALLING ,
 
 # Main Logic
 pin=0
-counter= 54.5
+counter= 8
 lastupdate = utime.time()  
 refresh(ssd, True)  # Initialise and clear display.
 
@@ -172,23 +169,12 @@ lasterror = 0
 # The Tweakable values that will help tune for our use case. TODO: Make accessible via menu on OLED
 output=0
 while True:
-    if powerup:
-        try:
-            counter=encoder(pin)
-            temp = readLight(photoPIN)
-            displaynum(counter,float(temp))
-            button_last_state = False # reset button last state to false again ,
-                                      # totally optional and application dependent,
-                                      # can also be done from other subroutines
-                                      # or from the main loop
-            now = utime.time()
-            dt= now-lastupdate
-        except Exception as e:
-            # Put something to output to OLED screen
-            beanaproblem('error.')
-            print('error encountered:'+str(e))
-            utime.sleep(checkin)
-    else:
-        if button_last_state == False:  # To prevent clearing on every cycle when power off
-            refresh(ssd, True)  # Clear any prior image
-            relaypin = Pin(15, mode = Pin.OUT, value =0 ) 
+    counter=encoder(pin)
+    temp = readLight(photoPIN)
+    displaynum(counter,float(temp))
+    button_last_state = False # reset button last state to false again ,
+                              # totally optional and application dependent,
+                              # can also be done from other subroutines
+                              # or from the main loop
+    utime.sleep(1)
+    now = utime.time()
