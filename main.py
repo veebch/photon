@@ -1,4 +1,4 @@
-# main.py - a script for making a light meter, running using a Raspberry Pi Pico
+# main.py - a script for making a tlight meter, running using a Raspberry Pi Pico
 # First prototype is using an OLED, rotary encoder and a photodiode
 # The display uses drivers made by Peter Hinch [link](https://github.com/peterhinch/micropython-nano-gui)
 
@@ -91,18 +91,14 @@ def encoder(pin):
         # if DT value is not equal to CLK value
         # rotation is clockwise [or Counterclockwise ---> sensor dependent]
         if outB.value() != outA_current:
-            counter += .05
-        else:
             counter -= .05
+        else:
+            counter += .05
         
-        # print the data on screen
-        #print("Counter : ", counter, "     |   Direction : ",direction)
-        #print("\n")
-    
     # update the last state of outA pin / CLK pin with the current state
     outA_last = outA_current
     counter=min(90,counter)
-    counter=max(0,counter)
+    counter=max(45,counter)
     return(counter)
     
 
@@ -126,11 +122,13 @@ def displaynum(num,temperature):
     CWriter.set_textpos(ssd, 35,0)  # verbose = False to suppress console output
     wri.printstring(str("{:.1f}".format(num))+" ")
     wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(255,255,255),bgcolor=0)
-    CWriter.set_textpos(ssd, 90,0)  
+    CWriter.set_textpos(ssd, 105,0)  
     wrimem.printstring(str("{:.1f}".format(temperature)))
-    CWriter.set_textpos(ssd,105,70)  
-    wrimem.printstring("iso:64")
-    
+    CWriter.set_textpos(ssd,105,90)  
+    wrimem.printstring("64")
+    wrimem = CWriter(ssd,freesans20, fgcolor=0,bgcolor=SSD.rgb(100,100,40))
+    CWriter.set_textpos(ssd,82,90)
+    wrimem.printstring(" iso ")
     ssd.show()
     return
 
@@ -161,7 +159,7 @@ switch.irq(trigger = Pin.IRQ_FALLING ,
 
 # Main Logic
 pin=0
-counter= 8
+counter= 44
 lastupdate = utime.time()  
 refresh(ssd, True)  # Initialise and clear display.
 
@@ -176,5 +174,5 @@ while True:
                               # totally optional and application dependent,
                               # can also be done from other subroutines
                               # or from the main loop
-    utime.sleep(1)
+    #utime.sleep(1)
     now = utime.time()
