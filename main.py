@@ -38,8 +38,9 @@ ssd = SSD(spi, pcs, pdc, prst, height)  # Create a display instance
 ssd.fill(0)
 
 wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(255,255,255),bgcolor=0)
-CWriter.set_textpos(ssd, 45,51)
-wri.printstring('Light')
+CWriter.set_textpos(ssd, 55,25)
+wri.printstring('incident')
+wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(255,255,0),bgcolor=0)
 CWriter.set_textpos(ssd, 90,25)
 wri.printstring('veeb.ch/')
 
@@ -123,8 +124,9 @@ def displaynum(num,temperature):
     wri.printstring(str("{:.1f}".format(num))+" ")
     wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(255,255,255),bgcolor=0)
     CWriter.set_textpos(ssd, 105,0)  
-    wrimem.printstring(str("{:.1f}".format(temperature)))
-    CWriter.set_textpos(ssd,105,90)  
+    wrimem.printstring(str("{:.0f}".format(temperature)))
+    CWriter.set_textpos(ssd,105,90)
+    wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(255,255,0),bgcolor=0)
     wrimem.printstring("64")
     wrimem = CWriter(ssd,freesans20, fgcolor=0,bgcolor=SSD.rgb(100,100,40))
     CWriter.set_textpos(ssd,82,90)
@@ -176,3 +178,5 @@ while True:
                               # or from the main loop
     #utime.sleep(1)
     now = utime.time()
+
+
