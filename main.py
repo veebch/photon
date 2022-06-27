@@ -1,4 +1,5 @@
 # main.py - a script for making a tlight meter, running using a Raspberry Pi Pico
+# Assumes a linear respose in the photodiode (datasheet suggests it is) an calibrates from two values in a text file
 # First prototype is using an OLED, rotary encoder and a photodiode
 # The display uses drivers made by Peter Hinch [link](https://github.com/peterhinch/micropython-nano-gui)
   
@@ -28,6 +29,9 @@ modes= ["AmbientShutterSpeed","AmbientAperture"]
 # this is a fix for the fact that we want all arrays in ascending 'brightness'
 
 fstops = list(reversed(fstops))
+calibration={ "7900":"1",            # This is the Calibration that maps a ADC reading to an EV reading from a lightmeter.
+              "9000":"2"}            # EV readings from a Sekonic 558. If components are consisteent, these wont need changing.
+              
 
 # 
 height = 128                         #the height of the oled
@@ -59,7 +63,7 @@ CWriter.set_textpos(ssd, 90,25)
 wri.printstring('veeb.ch/')
 
 ssd.show()
-utime.sleep(4)
+utime.sleep(2)
 
 # define encoder pins and mode switch pin
 
@@ -124,6 +128,7 @@ def button(pin):
     if button_current_state != button_last_state:
         utime.sleep(.2)
         print("Measure")
+        adctoreading()
         button_last_state = button_current_state
     return
 
@@ -154,6 +159,12 @@ def isobutton(pin):
         isoadjust = not isoadjust
         isobutton_last_state = isobutton_current_state
     return
+
+def adctoreading():
+    # This is the ADC reading to the desired Shutter Speed or Aperture
+    # Depending on the prority mode, the 'other' value is calculated an the corresponding string is returned
+    print("ADC to value")
+    return 
 
 
 # Screen to display on OLED
