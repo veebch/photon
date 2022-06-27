@@ -21,14 +21,23 @@ from drivers.ssd1351.ssd1351_16bit import SSD1351 as SSD
 # Values for Fstop, Shutter Speed and ISO
 
 fstops= [.6,.7,.8,.9,1,1.1,1.3,1.4,1.6,1.8,2,2.2,2.5,2.8,3.2,3.6,4,4.5,5,5.6,6.3,7.1,8,9,10,11,13,14,16,18,20,22,25,29,32,36,40,45,51,57,64,72,81,90,102,114,128,144,161]
-sspeed= ["1/ 8000e","1/ 6400","1/ 5000","1/ 4000","1/ 3200","1/ 2500","1/ 2000","1/ 1600","1/ 1250","1/ 1000","1/ 800","1/ 640","1/ 500","1/ 400","1/ 320","1/ 250","1/ 200", "1/ 160","1/ 125","1/ 100","1/ 80","1/ 60","1/ 50","1/ 40","1/ 30","1/ 25","1/ 20","1/ 15","1/ 13","1/ 10","1/ 8","1/ 6","1/ 5","1/ 4","0.3","0.4","0.5","0.6","0.8","1","1.3","1.6","2","2.5","3.2","4","5","6","8","10","13","15","20","25","30","40","50","60"]
-iso= [3,4,5,6,8,10,12,16,20,25,32,40,50,64,80,100,125,160,200,250,320,400,500,640,800,1000,1250,1600,2000,2500,3200, 4000, 5000,6400,8000]
+sspeed= ["1/ 8000","1/ 6400","1/ 5000","1/ 4000","1/ 3200","1/ 2500","1/ 2000","1/ 1600","1/ 1250","1/ 1000","1/ 800","1/ 640","1/ 500","1/ 400","1/ 320","1/ 250","1/ 200", "1/ 160","1/ 125","1/ 100","1/ 80","1/ 60","1/ 50","1/ 40","1/ 30","1/ 25","1/ 20","1/ 15","1/ 13","1/ 10","1/ 8","1/ 6","1/ 5","1/ 4","0.3","0.4","0.5","0.6","0.8","1","1.3","1.6","2","2.5","3.2","4","5","6","8","10","13","15","20","25","30","40","50","60"]
+isonum= [3,4,5,6,8,10,12,16,20,25,32,40,50,64,80,100,125,160,200,250,320,400,500,640,800,1000,1250,1600,2000,2500,3200, 4000, 5000,6400,8000]
+modes= ["AmbientShutterSpeed","AmbientAperture"]
 
+# this is a fix for the fact that we want all arrays in ascending 'brightness'
+
+fstops = list(reversed(fstops))
+
+# 
 height = 128                         #the height of the oled
 photoPIN = 26                        #The pin the photodiode is attached to 
 pdc = Pin(20, Pin.OUT, value=0)
 pcs = Pin(17, Pin.OUT, value=1)
 prst = Pin(21, Pin.OUT, value=1)
+
+# Splash Screen
+
 spi = SPI(0,
                   baudrate=10000000,
                   polarity=1,
@@ -55,7 +64,8 @@ utime.sleep(4)
 # define encoder pins and mode switch pin
 
 switch = Pin(4, mode=Pin.IN, pull = Pin.PULL_UP)     # inbuilt switch on the rotary encoder, ACTIVE LOW
-modeswitch = Pin(15, mode=Pin.IN, pull = Pin.PULL_UP) # 'mode' switch, the additional momentary switch 
+modeswitch = Pin(15, mode=Pin.IN, pull = Pin.PULL_UP) # 'mode' switch, the additional momentary switch
+
 outA = Pin(2, mode=Pin.IN) # Pin CLK of encoder
 outB = Pin(3, mode=Pin.IN) # Pin DT of encoder
 
@@ -65,8 +75,7 @@ ledPin = Pin(25, mode = Pin.OUT, value = 0) # Onboard led on GPIO 25
 
 
 # define global variables
-counter = 0   # counter updates when encoder rotates
-direction = "" # empty string for registering direction change
+
 outA_last = 0 # registers the last state of outA pin / CLK pin
 outA_current = 0 # registers the current state of outA pin / CLK pin
 
@@ -81,12 +90,9 @@ outA_last = outA.value() # lastStateCLK
 # interrupt handler function (IRQ) for CLK and DT pins
 def encoder(pin):
     # get global variables
-    global counter
-    global direction
     global outA_last
     global outA_current
-    global outA
-    
+    global counter
     # read the value of current state of outA pin / CLK pin
     try:
         outA_current = outA.value()
@@ -96,19 +102,15 @@ def encoder(pin):
         outA_last = 0
     # if current state is not same as the last stare , encoder has rotated
     if outA_current != outA_last:
-        # read outB pin/ DT pin
-        # if DT value is not equal to CLK value
-        # rotation is clockwise [or Counterclockwise ---> sensor dependent]
+        # read outB pin
         if outB.value() != outA_current:
-            counter -= .5
+            counter = -1
         else:
-            counter += .5
-        
+            counter = 1
+
     # update the last state of outA pin / CLK pin with the current state
     outA_last = outA_current
-    counter=min(len(fstops)-1,counter)
-    counter=max(0,counter)
-    return(counter)
+    return 
     
 
 # interrupt handler function (IRQ) for SW (switch) pin
@@ -126,35 +128,49 @@ def modebutton(pin):
     # get global variable
     global modebutton_last_state
     global modebutton_current_state
+    global mode
+    global modes
     if modebutton_current_state != modebutton_last_state:
         utime.sleep(.2)
         print("Toggle Mode")
+        index = modes.index(mode)
+        index = (index + 1) % len(modes)
+        mode = modes[index]
+        print(mode)
         modebutton_last_state = modebutton_current_state
     return
 
 
 # Screen to display on OLED
-def displaynum(num,temperature):
-    text=SSD.rgb(0,255,0)
+def displaynum(aperture,speed,iso,measured,mode):
+    if mode=="AmbientAperture":
+        textA=SSD.rgb(0,255,0)
+        textT=SSD.rgb(255,255,255)
+    else:
+        textT=SSD.rgb(0,255,0)
+        textA=SSD.rgb(255,255,255)
     ssd.fill(0)
-    wri = CWriter(ssd,quantico40, fgcolor=text,bgcolor=0, verbose=False)
+    wri = CWriter(ssd,quantico40, fgcolor=textA,bgcolor=0, verbose=False)
     CWriter.set_textpos(ssd, 35,20)  # verbose = False to suppress console output
     try:
-        wri.printstring(str(fstops[int(num)]))
+        wri.printstring(str(aperture))
     except:
         wri.printstring( "err")
+    wrimem = CWriter(ssd,freesans20, fgcolor=textT,bgcolor=0, verbose=False)
+    CWriter.set_textpos(ssd, 5,20)  
+    wrimem.printstring(speed)
     wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(255,255,255),bgcolor=0, verbose=False)
-    CWriter.set_textpos(ssd, 105,0)  
-    wrimem.printstring(str("{:.0f}".format(temperature)))
     CWriter.set_textpos(ssd, 35,0)  
     wrimem.printstring("F/")
     CWriter.set_textpos(ssd, 5,0)
-    wrimem.printstring("T 1/ 200")
-    CWriter.set_textpos(ssd,105,90)
+    wrimem.printstring("T:")
+    CWriter.set_textpos(ssd, 105,0)  
+    wrimem.printstring(str("{:.0f}".format(measured)))
+    CWriter.set_textpos(ssd,105,80)
     wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(255,255,0),bgcolor=0, verbose=False)
-    wrimem.printstring("64")
+    wrimem.printstring(str(iso))
     wrimem = CWriter(ssd,freesans20, fgcolor=0,bgcolor=SSD.rgb(100,100,40), verbose=False)
-    CWriter.set_textpos(ssd,82,90)
+    CWriter.set_textpos(ssd,82,80)
     wrimem.printstring(" iso ")
     ssd.show()
     return
@@ -187,20 +203,40 @@ modeswitch.irq(trigger = Pin.IRQ_FALLING ,
            handler = modebutton)
 
 
-
 # Main Logic
 pin=0
-counter= 4
+counter= 0
 lastupdate = utime.time()  
 refresh(ssd, True)  # Initialise and clear display.
 
 lasterror = 0
 # The Tweakable values that will help tune for our use case. TODO: Make accessible via menu on OLED
 output=0
+mode=modes[1]
+print(mode)
+apertureindex = 0
+speedindex = 0
+isoindex = 13
+lastcounter=0
 while True:
-    counter=encoder(pin)
+    iso=isonum[isoindex]
+    speed=sspeed[speedindex]
+    aperture=fstops[apertureindex]
+    encoder(pin)
     brightness = readLight(photoPIN)
-    displaynum(counter,float(brightness))
+    if counter!=lastcounter:
+    # adjust aperture or shutter speed, depending on mode selected
+        if mode=="AmbientAperture":
+            apertureindex=apertureindex + counter
+            apertureindex=max(0,apertureindex)
+            apertureindex=min(len(fstops)-1,apertureindex)            
+        elif  mode=='AmbientShutterSpeed':
+            speedindex=speedindex + counter
+            speedindex=max(0,speedindex)
+            speedindex=min(len(sspeed)-1,speedindex)
+        counter=0
+    lastcounter=counter
+    displaynum(aperture, speed, iso,float(brightness),mode)
     button_last_state = False # reset button last state to false again ,
                               # totally optional and application dependent,
                               # can also be done from other subroutines
@@ -209,7 +245,7 @@ while True:
                               # totally optional and application dependent,
                               # can also be done from other subroutines
                               # or from the main loop
-    #utime.sleep(1)
+    utime.sleep(.01)
     now = utime.time()
 
 
