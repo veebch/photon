@@ -23,5 +23,5 @@ An incident light-meter is an essential tool in photography. The sophisticated c
 
 # To Do
 
-Power management. Power down after delay? Accelerometer activated oled? Battery indicator? 
-Flash measurement.
+- Power management. Power down after delay? Accelerometer activated oled? Battery indicator? 
+- Flash measurement.
