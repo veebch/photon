@@ -163,12 +163,23 @@ def isobutton(pin):
 def adctoreading():
     # This is the ADC reading to the desired Shutter Speed or Aperture
     # Depending on the prority mode, the 'other' value is calculated an the corresponding string is returned
+    # There's also the option to clear the screen and do a little time series graph
     print("ADC to value")
+    # take a simple mean of n values as a first stab
+    count=0
+    sum=0
+    n=100 # samples
+    while count<(n):
+        sum = sum + readLight(photoPIN)
+        count = count + 1
+    else:
+        brightness = sum/n
+    print(brightness)
     return 
 
 
 # Screen to display on OLED
-def displaynum(aperture,speed,iso,measured,mode, isoadjust):
+def displaynum(aperture,speed,iso,mode, isoadjust):
     if mode=="AmbientAperture":
         textA=SSD.rgb(0,255,0)
         textT=SSD.rgb(255,255,255)
@@ -191,8 +202,6 @@ def displaynum(aperture,speed,iso,measured,mode, isoadjust):
     CWriter.set_textpos(ssd, 5,0)
     wrimem.printstring("T:")
     wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(55,55,55),bgcolor=0, verbose=False)    
-    CWriter.set_textpos(ssd, 105,0)  
-    wrimem.printstring(str("{:.0f}".format(measured)))
     CWriter.set_textpos(ssd,105,80)
     wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(255,255,0),bgcolor=0, verbose=False)
     wrimem.printstring(str(iso))
@@ -260,7 +269,7 @@ while True:
     speed=sspeed[speedindex]
     aperture=fstops[apertureindex]
     encoder(pin)
-    brightness = readLight(photoPIN)
+    
     if counter!=lastcounter:
     # adjust aperture or shutter speed, depending on mode selected
         if isoadjust:
@@ -278,7 +287,7 @@ while True:
                 speedindex=min(len(sspeed)-1,speedindex)
         counter=0
     lastcounter=counter
-    displaynum(aperture, speed, iso,float(brightness),mode, isoadjust)
+    displaynum(aperture, speed, iso,mode, isoadjust)
     button_last_state = False # reset button last state to false again ,
                               # totally optional and application dependent,
                               # can also be done from other subroutines
