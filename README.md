@@ -19,3 +19,8 @@ An incident light-meter is an essential tool in photography. The sophisticated c
 - A LiPo Battery
 - A roll-on Deodorant bottle
 - A 3d printed insert for said deodorant bottle
+
+
+# To Do
+
+This was very much hitting things with a spanner until they worked. If there are any stability issues, centre more code around `uasyncio`
