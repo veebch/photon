@@ -65,6 +65,7 @@ utime.sleep(4)
 
 switch = Pin(4, mode=Pin.IN, pull = Pin.PULL_UP)     # inbuilt switch on the rotary encoder, ACTIVE LOW
 modeswitch = Pin(15, mode=Pin.IN, pull = Pin.PULL_UP) # 'mode' switch, the additional momentary switch
+isoswitch = Pin(13, mode=Pin.IN, pull = Pin.PULL_UP) # 'mode' switch, the additional momentary switch
 
 outA = Pin(2, mode=Pin.IN) # Pin CLK of encoder
 outB = Pin(3, mode=Pin.IN) # Pin DT of encoder
@@ -83,6 +84,8 @@ button_last_state = False # initial state of encoder's button
 button_current_state = "" # empty string ---> current state of button
 modebutton_last_state = False # initial state of encoder's button 
 modebutton_current_state = "" # empty string ---> current state of button
+isobutton_last_state = False # initial state of encoder's button 
+isobutton_current_state = "" # empty string ---> current state of button
 
 # Read the last state of CLK pin in the initialisaton phase of the program 
 outA_last = outA.value() # lastStateCLK
@@ -140,9 +143,21 @@ def modebutton(pin):
         modebutton_last_state = modebutton_current_state
     return
 
+# interrupt handler function (IRQ) for SW (switch) pin
+def isobutton(pin):
+    # get global variable
+    global isobutton_last_state
+    global isobutton_current_state
+    global isoadjust
+    if isobutton_current_state != isobutton_last_state:
+        utime.sleep(.2)
+        isoadjust = not isoadjust
+        isobutton_last_state = isobutton_current_state
+    return
+
 
 # Screen to display on OLED
-def displaynum(aperture,speed,iso,measured,mode):
+def displaynum(aperture,speed,iso,measured,mode, isoadjust):
     if mode=="AmbientAperture":
         textA=SSD.rgb(0,255,0)
         textT=SSD.rgb(255,255,255)
@@ -164,12 +179,17 @@ def displaynum(aperture,speed,iso,measured,mode):
     wrimem.printstring("F/")
     CWriter.set_textpos(ssd, 5,0)
     wrimem.printstring("T:")
+    wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(55,55,55),bgcolor=0, verbose=False)    
     CWriter.set_textpos(ssd, 105,0)  
     wrimem.printstring(str("{:.0f}".format(measured)))
     CWriter.set_textpos(ssd,105,80)
     wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(255,255,0),bgcolor=0, verbose=False)
     wrimem.printstring(str(iso))
-    wrimem = CWriter(ssd,freesans20, fgcolor=0,bgcolor=SSD.rgb(100,100,40), verbose=False)
+    if isoadjust:
+        box=SSD.rgb(255,0,0)
+    else:
+        box=SSD.rgb(100,100,40)
+    wrimem = CWriter(ssd,freesans20, fgcolor=0,bgcolor=box, verbose=False)
     CWriter.set_textpos(ssd,82,80)
     wrimem.printstring(" iso ")
     ssd.show()
@@ -202,8 +222,14 @@ switch.irq(trigger = Pin.IRQ_FALLING ,
 modeswitch.irq(trigger = Pin.IRQ_FALLING ,
            handler = modebutton)
 
+# attach interrupt to the switch pin ( SW pin of encoder module )
+isoswitch.irq(trigger = Pin.IRQ_FALLING ,
+           handler = isobutton)
+
+
 
 # Main Logic
+isoadjust=False
 pin=0
 counter= 0
 lastupdate = utime.time()  
@@ -226,26 +252,28 @@ while True:
     brightness = readLight(photoPIN)
     if counter!=lastcounter:
     # adjust aperture or shutter speed, depending on mode selected
-        if mode=="AmbientAperture":
-            apertureindex=apertureindex + counter
-            apertureindex=max(0,apertureindex)
-            apertureindex=min(len(fstops)-1,apertureindex)            
-        elif  mode=='AmbientShutterSpeed':
-            speedindex=speedindex + counter
-            speedindex=max(0,speedindex)
-            speedindex=min(len(sspeed)-1,speedindex)
+        if isoadjust:
+            isoindex=isoindex + counter
+            isoindex=max(0,isoindex)
+            isoindex=min(len(isonum)-1,isoindex)
+        else:
+            if mode=="AmbientAperture":
+                apertureindex=apertureindex + counter
+                apertureindex=max(0,apertureindex)
+                apertureindex=min(len(fstops)-1,apertureindex)            
+            elif  mode=='AmbientShutterSpeed':
+                speedindex=speedindex + counter
+                speedindex=max(0,speedindex)
+                speedindex=min(len(sspeed)-1,speedindex)
         counter=0
     lastcounter=counter
-    displaynum(aperture, speed, iso,float(brightness),mode)
+    displaynum(aperture, speed, iso,float(brightness),mode, isoadjust)
     button_last_state = False # reset button last state to false again ,
                               # totally optional and application dependent,
                               # can also be done from other subroutines
                               # or from the main loop
-    modebutton_last_state = False # reset button last state to false again ,
-                              # totally optional and application dependent,
-                              # can also be done from other subroutines
-                              # or from the main loop
-    utime.sleep(.01)
+    modebutton_last_state = False # see above
+    isobutton_last_state = False # see above
     now = utime.time()
 
 
