@@ -23,4 +23,5 @@ An incident light-meter is an essential tool in photography. The sophisticated c
 
 # To Do
 
-This was very much hitting things with a spanner until they worked. If there are any stability issues, centre more code around `uasyncio`
+Power management. Power down after delay? Accelerometer activated oled? Battery indicator? 
+Flash measurement.
