@@ -13,8 +13,8 @@ An incident light-meter is an essential tool in photography. The sophisticated c
 # Hardware
 
 - A Pi Pico                     
-- A Rotary Encoder              (mode selection etc)
-- A Mechanical Keyboard Switch  (to Trigger measurement)
+- A Rotary Encoder              (adjust settings and measure)
+- A Mmomentary Switch           (to toggle mode)
 - A Photodiode                  (fast and accurate measurement in case we end up writing code that is clever enough to measure studio flash)            
 - A LiPo Battery
 - A roll-on Deodorant bottle
