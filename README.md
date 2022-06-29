@@ -36,7 +36,7 @@ or
 
 $$N = \sqrt{t e^{E_{ISO}}}$$
 
-where $t$ is shutter speed and $N$ is f-stop.
+where $t$ is shutter speed and $N$ is f-stop. The value is then rounded to the nearest nominal value and displayed on the screen.
 
 
 # To Do
