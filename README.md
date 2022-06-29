@@ -22,7 +22,7 @@ An incident light-meter is an essential tool in photography. The sophisticated c
 
 # Calculating Values
 
-The ADC value is converted to an Exposure value ($E_v$). This Exposure value is then adjusted to an Exposure value for the chosen ISO ($E_{ISO}$) using
+The ADC value measured by the Pico is converted to an Exposure value ($E_v$). This Exposure value is then adjusted to an Exposure value for the chosen ISO ($E_{ISO}$) using
 
 $$E_{ISO}=E_v + \log_2 {{ISO}\over{100}}$$
 
