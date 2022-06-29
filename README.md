@@ -20,7 +20,7 @@ An incident light-meter is an essential tool in photography. The sophisticated c
 - A roll-on Deodorant bottle
 - A 3d printed insert for said deodorant bottle
 
-# Calculating Values
+# Calculating
 
 The simple calculations that lead to a reading are based on the Wikipedia Page on [exposure value](https://en.wikipedia.org/wiki/Exposure_value).
 
