@@ -41,5 +41,5 @@ where $t$ is shutter speed and $N$ is f-stop. The value is then rounded to the n
 
 # To Do
 
-- Power management. Power down after delay? Accelerometer activated oled? Battery indicator? 
+- Power management. Power down after delay? Accelerometer-activated OLED? Battery indicator? 
 - Flash measurement.
