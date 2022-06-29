@@ -26,9 +26,9 @@ The simple calculations that lead to a reading are based on the Wikipedia Page o
 
 The ADC value measured by the Pico is converted to an exposure value ($E_v$). This exposure value is then adjusted to an Exposure value for the chosen ISO ($E_{ISO}$) using
 
-$$E_{ISO}=E_v + \log_2 {{ISO}\over{100}}$$
+$$E_{ISO}=E_v + \log_2 {{ISO}\over{100}}.$$
 
-Then , depending on the priority on the light meter, the remaining value is calculated using
+Then, depending on the priority on the light meter, the remaining value is calculated using
 
 $$t = {{\log_2 N^2} \over {E_{ISO}}}$$  
 
