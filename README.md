@@ -29,8 +29,10 @@ $$E_{ISO}=E_v + \log_2 {ISO}  \over {100}$$
 Then,depending on the priority on the light meter, the remaining value is calculated using
 
 $$t = {{\log_2 N^2} \over {E_{ISO}}}$$  
+
 or
-$$N = \sqrt{t e^ {E_{ISO}}}$$
+
+$$N = \sqrt{t e^{E_{ISO}}}$$
 
 
 
