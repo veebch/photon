@@ -29,8 +29,8 @@ modes= ["AmbientShutterSpeed","AmbientAperture"]
 # this is a fix for the fact that we want all arrays in ascending 'brightness'
 
 fstops = list(reversed(fstops))
-calibration={ "7900":"1",            # This is the Calibration that maps a ADC reading to an EV reading from a lightmeter.
-              "9000":"2"}            # EV readings from a Sekonic 558. If components are consisteent, these wont need changing.
+calibration={ "7900":"4.6",            # This is the Calibration that maps a ADC reading to an EV reading from a lightmeter. 3 points to check linearity assumption.
+              "8300":"6.5"}            # EV readings from a Sekonic 558. If components are consisteent, these wont need changing.
               
 
 # 
@@ -125,11 +125,13 @@ def button(pin):
     # get global variable
     global button_last_state
     global button_current_state
+    global lastmeasure
     if button_current_state != button_last_state:
         utime.sleep(.2)
         print("Measure")
-        adctoreading()
+        lastmeasure=adctoreading()
         button_last_state = button_current_state
+    print(lastmeasure)
     return
 
 def modebutton(pin):
@@ -161,25 +163,25 @@ def isobutton(pin):
     return
 
 def adctoreading():
-    # This is the ADC reading to the desired Shutter Speed or Aperture
-    # Depending on the prority mode, the 'other' value is calculated an the corresponding string is returned
-    # There's also the option to clear the screen and do a little time series graph
-    print("ADC to value")
+    # This is the ADC reading to the EV (100) value
     # take a simple mean of n values as a first stab
     count=0
     sum=0
-    n=100 # samples
-    while count<(n):
+    n=400 # samples
+    while count< n:
         sum = sum + readLight(photoPIN)
         count = count + 1
     else:
         brightness = sum/n
-    print(brightness)
-    return 
+    m = 0.00475
+    c = -34
+    EV = brightness * m + c # Assuming linear response in current when exposed to light
+    return EV
 
 
 # Screen to display on OLED
-def displaynum(aperture,speed,iso,mode, isoadjust):
+def displaynum(aperture,speed,iso,mode, isoadjust, lastmeasure):
+    delta=-lastmeasure+adctoreading()
     if mode=="AmbientAperture":
         textA=SSD.rgb(0,255,0)
         textT=SSD.rgb(255,255,255)
@@ -205,6 +207,12 @@ def displaynum(aperture,speed,iso,mode, isoadjust):
     CWriter.set_textpos(ssd,105,80)
     wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(255,255,0),bgcolor=0, verbose=False)
     wrimem.printstring(str(iso))
+    CWriter.set_textpos(ssd,105,0)
+    howgrey= int(abs(delta))
+    howgrey=min(255,howgrey)
+    howgrey=max(55,howgrey)
+    wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(howgrey,howgrey,howgrey),bgcolor=0, verbose=False)
+    wrimem.printstring(str(round(delta,1))+"EV")
     if isoadjust:
         box=SSD.rgb(255,0,0)
     else:
@@ -264,6 +272,7 @@ apertureindex = 0
 speedindex = 0
 isoindex = 13
 lastcounter=0
+lastmeasure=0
 while True:
     iso=isonum[isoindex]
     speed=sspeed[speedindex]
@@ -287,7 +296,7 @@ while True:
                 speedindex=min(len(sspeed)-1,speedindex)
         counter=0
     lastcounter=counter
-    displaynum(aperture, speed, iso,mode, isoadjust)
+    displaynum(aperture, speed, iso,mode, isoadjust,lastmeasure)
     button_last_state = False # reset button last state to false again ,
                               # totally optional and application dependent,
                               # can also be done from other subroutines
