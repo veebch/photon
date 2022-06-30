@@ -16,7 +16,7 @@ An incident light-meter is an essential tool in photography. The sophisticated c
 - Photodiode                  (a Vishay BPW21R - in photovoltaic mode)   
 - LiPo battery
 - Roll-on deodorant bottle
-- A 3d-printed insert for said deodorant bottle
+
 
 # Calculating
 
