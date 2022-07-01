@@ -251,13 +251,13 @@ def otherindex(index, isoindex, mode, lastmeasure):
     Eiso= lastmeasure + math.log2(float(isonum[isoindex]/100))
     if mode=="AmbientAperture":
         aperture=fstops[apertureindex]
-        t= math.log2(float(aperture))/Eiso
+        t= (float(aperture)**2)/(2**Eiso)
         print(t)
         derivedindex = min(range(len(sspeed)), key=lambda i: abs(eval(sspeed[i])-t))
     elif mode=='AmbientShutterSpeed':
         speed=sspeed[speedindex]
         print(eval(speed))
-        N = math.sqrt(math.exp(eval(speed)*Eiso))
+        N = math.sqrt(eval(speed)*2**(Eiso))
         print(N)
         derivedindex = min(range(len(fstops)), key=lambda i: abs(float(fstops[i])-N))
     return derivedindex
