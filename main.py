@@ -29,11 +29,28 @@ modes= ["AmbientShutterSpeed","AmbientAperture"]
 # this is a fix for the fact that we want all arrays in ascending 'brightness'
 
 fstops = list(reversed(fstops))
-calibration={ "7900":"4.6",            # This is the Calibration that maps a ADC reading to an EV reading from a lightmeter. 3 points to check linearity assumption.
-              "8300":"6.5"}            # EV readings from a Sekonic 558. If components are consisteent, these wont need changing.
-              
 
-# 
+# For conversiot from ADC to EV
+calib1 = (7900,4.6)            # This is the Calibration that maps a ADC reading to an EV reading from a lightmeter (assumes linearity). 
+calib2 = (8300,6.5)            # EV readings from a Sekonic 558. If components are consistent, these wont need changing.
+
+#
+#  Invert 2x2 matrix  A = a  b  to solve the simultaneous equation for the straight line
+#                         c  d
+#
+
+a= calib1[0]
+b= 1
+c= calib2[0]
+d= 1 
+det= 1/(a*d-b*c)
+
+# y= mx + i
+m = det*( d * calib1[1] - b * calib2[1])
+i = det*(-c * calib1[1] + a * calib2[1])
+
+# Other Parameters
+
 height = 128                         #the height of the oled
 photoPIN = 26                        #The pin the photodiode is attached to 
 pdc = Pin(20, Pin.OUT, value=0)
@@ -131,7 +148,7 @@ def button(pin):
         print("Measure")
         lastmeasure=adctoreading()
         button_last_state = button_current_state
-    print(lastmeasure)
+        print(lastmeasure)
     return
 
 def modebutton(pin):
@@ -173,9 +190,7 @@ def adctoreading():
         count = count + 1
     else:
         brightness = sum/n
-    m = 0.00475
-    c = -34
-    EV = brightness * m + c # Assuming linear response in current when exposed to light
+    EV = brightness * m + i # Assuming linear response in current when exposed to light
     return EV
 
 
