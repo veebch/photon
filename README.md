@@ -32,7 +32,7 @@ $$t = {{\log_2 N^2} \over {E_{ISO}}}$$
 
 or
 
-$$N = \sqrt{ e^{t E_{ISO}}}$$
+$$N = \sqrt{t e^{ E_{ISO}}}$$
 
 where $t$ is shutter speed and $N$ is f-stop. The value is then rounded to the nearest nominal value and displayed on the screen End of maths.
 
