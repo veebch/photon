@@ -45,7 +45,7 @@ c= calib2[0]
 d= 1 
 det= 1/(a*d-b*c)
 
-# y= mx + i
+# y= mx + i 
 m = det*( d * calib1[1] - b * calib2[1])
 i = det*(-c * calib1[1] + a * calib2[1])
 
@@ -246,7 +246,22 @@ def readLight(photoGP):
 def beanaproblem(string):
     refresh(ssd, True)  # Clear any prior image
     utime.sleep(2)
-    
+
+def otherindex(index, isoindex, mode, lastmeasure):
+    Eiso= lastmeasure + math.log2(float(isonum[isoindex]/100))
+    if mode=="AmbientAperture":
+        aperture=fstops[apertureindex]
+        t= math.log2(float(aperture))/Eiso
+        print(t)
+        derivedindex = min(range(len(sspeed)), key=lambda i: abs(eval(sspeed[i])-t))
+    elif mode=='AmbientShutterSpeed':
+        speed=sspeed[speedindex]
+        print(eval(speed))
+        N = math.sqrt(math.exp(eval(speed)*Eiso))
+        print(N)
+        derivedindex = min(range(len(fstops)), key=lambda i: abs(float(fstops[i])-N))
+    return derivedindex
+
 # Attach interrupt to Pins
 
 # attach interrupt to the outA pin ( CLK pin of encoder module )
@@ -283,17 +298,16 @@ lasterror = 0
 output=0
 mode=modes[1]
 print(mode)
-apertureindex = 0
-speedindex = 0
-isoindex = 13
+apertureindex = 26   # f8
+isoindex = 15        # iso 100
 lastcounter=0
-lastmeasure=0
+lastmeasure=adctoreading()
+speedindex = otherindex(apertureindex, isoindex, mode, lastmeasure)
 while True:
     iso=isonum[isoindex]
     speed=sspeed[speedindex]
     aperture=fstops[apertureindex]
-    encoder(pin)
-    
+    encoder(pin)   
     if counter!=lastcounter:
     # adjust aperture or shutter speed, depending on mode selected
         if isoadjust:
@@ -304,11 +318,15 @@ while True:
             if mode=="AmbientAperture":
                 apertureindex=apertureindex + counter
                 apertureindex=max(0,apertureindex)
-                apertureindex=min(len(fstops)-1,apertureindex)            
+                apertureindex=min(len(fstops)-1,apertureindex)
+                # Now, derive shutter speed from aperture choice and lastmeasure
+                speedindex = otherindex(apertureindex, isoindex, mode, lastmeasure)
             elif  mode=='AmbientShutterSpeed':
                 speedindex=speedindex + counter
                 speedindex=max(0,speedindex)
                 speedindex=min(len(sspeed)-1,speedindex)
+                # Now, derive aperture from shutter speed choice and lastmeasure
+                apertureindex = otherindex(speedindex, isoindex, mode, lastmeasure)
         counter=0
     lastcounter=counter
     displaynum(aperture, speed, iso,mode, isoadjust,lastmeasure)
