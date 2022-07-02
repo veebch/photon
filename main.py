@@ -84,12 +84,12 @@ utime.sleep(2)
 
 # define encoder pins and mode switch pin
 
-switch = Pin(4, mode=Pin.IN, pull = Pin.PULL_UP)     # inbuilt switch on the rotary encoder, ACTIVE LOW
+switch = Pin(8, mode=Pin.IN, pull = Pin.PULL_UP)     # inbuilt switch on the rotary encoder, ACTIVE LOW
 modeswitch = Pin(15, mode=Pin.IN, pull = Pin.PULL_UP) # 'mode' switch, the additional momentary switch
 isoswitch = Pin(13, mode=Pin.IN, pull = Pin.PULL_UP) # 'mode' switch, the additional momentary switch
 
-outA = Pin(2, mode=Pin.IN) # Pin CLK of encoder
-outB = Pin(3, mode=Pin.IN) # Pin DT of encoder
+outA = Pin(6, mode=Pin.IN) # Pin CLK of encoder
+outB = Pin(7, mode=Pin.IN) # Pin DT of encoder
 
 # Define LED pin
 
@@ -190,7 +190,7 @@ def adctoreading():
         count = count + 1
     else:
         brightness = sum/n
-    print(brightness)
+    #print(brightness)
     EV = brightness * m + i # Assuming linear response in current when exposed to light
     return EV
 
@@ -338,5 +338,6 @@ while True:
     modebutton_last_state = False # see above
     isobutton_last_state = False # see above
     now = utime.time()
+
 
 
