@@ -310,7 +310,7 @@ while True:
     speed=sspeed[speedindex]
     aperture=fstops[apertureindex]
     encoder(pin)   
-    if counter!=lastcounter:
+    if counter!=lastcounter or button_current_state != button_last_state:
     # adjust aperture or shutter speed, depending on mode selected
         if isoadjust:
             isoindex=isoindex + counter
@@ -338,6 +338,3 @@ while True:
     modebutton_last_state = False # see above
     isobutton_last_state = False # see above
     now = utime.time()
-
-
-
