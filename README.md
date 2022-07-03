@@ -2,7 +2,7 @@
 
 # Incident
 
-An open-source light-meter that reproduces the functionality of expensive tools, using a few inexpensive/readily available parts. There is soldering involved in this but don't let that put you off.
+An open-source light-meter that reproduces the functionality of expensive tools, using a few inexpensive/readily available parts. There is soldering involved, but don't let that put you off.
 
 # Background
 
