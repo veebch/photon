@@ -57,6 +57,20 @@ pdc = Pin(20, Pin.OUT, value=0)
 pcs = Pin(17, Pin.OUT, value=1)
 prst = Pin(21, Pin.OUT, value=1)
 
+# Power Management
+
+vsys = ADC(29)              # reads the system input voltage
+charging = Pin(24, Pin.IN)  # reading GP24 tells us whether or not USB power is connected
+conversion_factor = 3 * 3.3 / 65535
+
+full_battery = 4.2                  # these are our reference voltages for a full/empty battery, in volts
+empty_battery = 2.8                 # the values could vary by battery size/manufacturer so you might need to adjust them
+
+voltage = vsys.read_u16() * conversion_factor
+percentage = 100 * ((voltage - empty_battery) / (full_battery - empty_battery))
+if percentage > 100:
+    percentage = 100
+
 # Splash Screen
 
 spi = SPI(0,
@@ -72,6 +86,10 @@ gc.collect()  # Precaution before instantiating framebuf
 ssd = SSD(spi, pcs, pdc, prst, height)  # Create a display instance
 ssd.fill(0)
 
+
+wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(55,55,55),bgcolor=0)
+CWriter.set_textpos(ssd, 0,0)
+wri.printstring('{:.0f}%'.format(percentage))
 wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(255,255,255),bgcolor=0)
 CWriter.set_textpos(ssd, 55,25)
 wri.printstring('incident')
@@ -254,13 +272,13 @@ def otherindex(index, isoindex, mode, lastmeasure):
     if mode=="AmbientAperture":
         aperture=fstops[apertureindex]
         t= (float(aperture)**2)/(2**Eiso)
-        print(t)
+        #print(t)
         derivedindex = min(range(len(sspeed)), key=lambda i: abs(eval(sspeed[i])-t))
     elif mode=='AmbientShutterSpeed':
         speed=sspeed[speedindex]
         print(eval(speed))
         N = math.sqrt(eval(speed)*2**(Eiso))
-        print(N)
+        #print(N)
         derivedindex = min(range(len(fstops)), key=lambda i: abs(float(fstops[i])-N))
     return derivedindex
 
@@ -317,15 +335,17 @@ while True:
             isoindex=max(0,isoindex)
             isoindex=min(len(isonum)-1,isoindex)
         if mode=="AmbientAperture":
-            apertureindex=apertureindex + counter
-            apertureindex=max(0,apertureindex)
-            apertureindex=min(len(fstops)-1,apertureindex)
+            if not isoadjust:
+                apertureindex=apertureindex + counter
+                apertureindex=max(0,apertureindex)
+                apertureindex=min(len(fstops)-1,apertureindex)
             # Now, derive shutter speed from aperture choice and lastmeasure
             speedindex = otherindex(apertureindex, isoindex, mode, lastmeasure)
         elif  mode=='AmbientShutterSpeed':
-            speedindex=speedindex + counter
-            speedindex=max(0,speedindex)
-            speedindex=min(len(sspeed)-1,speedindex)
+            if not isoadjust:
+                speedindex=speedindex + counter
+                speedindex=max(0,speedindex)
+                speedindex=min(len(sspeed)-1,speedindex)
             # Now, derive aperture from shutter speed choice and lastmeasure
             apertureindex = otherindex(speedindex, isoindex, mode, lastmeasure)
         counter=0
