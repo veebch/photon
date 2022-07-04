@@ -16,7 +16,7 @@ An incident light-meter is an essential tool in photography. The sophisticated c
 - Photodiode                  (a Vishay BPW21R - in photovoltaic mode) 
 - Resistor                    (220 ohm, in series with photodiode) 
 - LiPo battery
-
+- PIR Dome
 
 
 # Calculating
