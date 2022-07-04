@@ -13,7 +13,7 @@ An incident light-meter is an essential tool in photography. The sophisticated c
 - Raspberry Pi Pico                     
 - Rotary encoder              (adjust settings and measure)
 - 2x Momentary switch         (to toggle mode and iso)
-- Pimoroni BH1745              
+- Pimoroni BH1745             (Sheffield Massive Represent)
 - LiPo battery
 - PIR Dome
 
