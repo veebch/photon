@@ -15,6 +15,7 @@ An incident light-meter is an essential tool in photography. The sophisticated c
 - 2x Momentary switch         (to toggle mode and iso)
 - Pimoroni BH1745             (Sheffield massive represent)
 - LiPo battery
+- Wires galore
 - PIR Dome
 
 # Installation
