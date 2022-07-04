@@ -17,6 +17,9 @@ An incident light-meter is an essential tool in photography. The sophisticated c
 - LiPo battery
 - PIR Dome
 
+# Installation
+
+Download a `uf2` image from [pimoroni](https://github.com/pimoroni/pimoroni-pico/releases)
 
 # Calculating
 
