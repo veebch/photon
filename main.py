@@ -1,5 +1,5 @@
-# main.py - a script for making a tlight meter, running using a Raspberry Pi Pico
-# Assumes a linear respose in the photodiode (datasheet suggests it is) an calibrates from two values in a text file
+# main.py - a script for making a light meter, running using a Raspberry Pi Pico
+# Assumes a linear respose in brightness, calibrates from two values in a text file
 # First prototype is using an OLED, rotary encoder and a photodiode
 # The display uses drivers made by Peter Hinch [link](https://github.com/peterhinch/micropython-nano-gui)
   
@@ -16,9 +16,17 @@ from rp2 import PIO, StateMachine, asm_pio
 import sys
 import math
 import gc
+import pimoroni_i2c
+import breakout_bh1745
 # Display setup
 from drivers.ssd1351.ssd1351_16bit import SSD1351 as SSD
 
+PINS_BREAKOUT_GARDEN = {"sda": 0, "scl": 1}
+
+I2C = pimoroni_i2c.PimoroniI2C(**PINS_BREAKOUT_GARDEN)
+bh1745 = breakout_bh1745.BreakoutBH1745(I2C)
+
+bh1745.leds(False)
 # Values for Fstop, Shutter Speed and ISO
 
 fstops= [.6,.7,.8,.9,1,1.1,1.3,1.4,1.6,1.8,2,2.2,2.5,2.8,3.2,3.6,4,4.5,5,5.6,6.3,7.1,8,9,10,11,13,14,16,18,20,22,25,29,32,36,40,45,51,57,64,72,81,90,102,114,128,144,161]
@@ -31,8 +39,8 @@ modes= ["AmbientShutterSpeed","AmbientAperture"]
 fstops = list(reversed(fstops))
 
 # For conversiot from ADC to EV
-calib1 = (10300,11.9)            # This is the Calibration that maps a ADC reading to an EV reading from a lightmeter (assumes linearity). 
-calib2 = (8400,6.9)            # EV readings from a Sekonic 558. If components are consistent, these wont need changing.
+calib1 = (-13,6)          # This is the Calibration that maps abrightness reading to an EV reading from a lightmeter (assumes linearity). 
+calib2 = (-15.2,0)            # EV readings from a Sekonic 558. If components are consistent, these wont need changing.
 
 #
 #  Invert 2x2 matrix  A = a  b  to solve the simultaneous equation for the straight line
@@ -52,7 +60,6 @@ i = det*(-c * calib1[1] + a * calib2[1])
 # Other Parameters
 
 height = 128                         #the height of the oled
-photoPIN = 26                        #The pin the photodiode is attached to 
 pdc = Pin(20, Pin.OUT, value=0)
 pcs = Pin(17, Pin.OUT, value=1)
 prst = Pin(21, Pin.OUT, value=1)
@@ -164,7 +171,7 @@ def button(pin):
     if button_current_state != button_last_state:
         utime.sleep(.2)
         print("Measure")
-        lastmeasure=adctoreading()
+        lastmeasure=sensorread()
         button_last_state = button_current_state
         print(lastmeasure)
     return
@@ -197,25 +204,17 @@ def isobutton(pin):
         isobutton_last_state = isobutton_current_state
     return
 
-def adctoreading():
-    # This is the ADC reading to the EV (100) value
-    # take a simple mean of n values as a first stab
-    count=0
-    sum=0
-    n=400 # samples
-    while count< n:
-        sum = sum + readLight(photoPIN)
-        count = count + 1
-    else:
-        brightness = sum/n
-    #print(brightness)
+def sensorread():
+    rgbc_raw = bh1745.rgbc_raw()
+    brightness=rgbc_raw[3]
+    print(brightness)
     EV = brightness * m + i # Assuming linear response in current when exposed to light
     return EV
 
 
 # Screen to display on OLED
 def displaynum(aperture,speed,iso,mode, isoadjust, lastmeasure):
-    delta=-lastmeasure+adctoreading()
+    #delta=-lastmeasure+sensorread()
     if mode=="AmbientAperture":
         textA=SSD.rgb(0,255,0)
         textT=SSD.rgb(255,255,255)
@@ -243,12 +242,9 @@ def displaynum(aperture,speed,iso,mode, isoadjust, lastmeasure):
     wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(255,255,0),bgcolor=0, verbose=False)
     wrimem.printstring(str(iso))
     CWriter.set_textpos(ssd,105,0)
-    howgrey= int(abs(delta))
-    howgrey=min(255,howgrey)
-    howgrey=max(55,howgrey)
-    wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(howgrey,howgrey,howgrey),bgcolor=0, verbose=False)
-    wrimem.printstring(str(round(delta,1))+"EV")
-    #wrimem.printstring(str(readLight(photoPIN))) Uncomment for calibration
+    wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(100,100,100),bgcolor=0, verbose=False)
+    #wrimem.printstring(str(round(delta,1))+"EV")
+    wrimem.printstring(str(round(lastmeasure,1))) # Uncomment for calibration
     if isoadjust:
         box=SSD.rgb(255,0,0)
     else:
@@ -258,11 +254,6 @@ def displaynum(aperture,speed,iso,mode, isoadjust, lastmeasure):
     wrimem.printstring(" iso ")
     ssd.show()
     return
-
-def readLight(photoGP):
-    photoRes = ADC(Pin(photoGP))
-    light = photoRes.read_u16() # with no transform to brightness
-    return light
 
 def beanaproblem(string):
     refresh(ssd, True)  # Clear any prior image
@@ -322,7 +313,7 @@ print(mode)
 apertureindex = 26   # f8
 isoindex = 15        # iso 100
 lastcounter=0
-lastmeasure=adctoreading()
+lastmeasure=sensorread()
 speedindex = otherindex(apertureindex, isoindex, mode, lastmeasure)
 while True:
     iso=isonum[isoindex]
@@ -350,8 +341,8 @@ while True:
             # Now, derive aperture from shutter speed choice and lastmeasure
             apertureindex = otherindex(speedindex, isoindex, mode, lastmeasure)
         counter=0
+        displaynum(aperture, speed, iso,mode, isoadjust,lastmeasure)
     lastcounter=counter
-    displaynum(aperture, speed, iso,mode, isoadjust,lastmeasure)
     button_last_state = False # reset button last state to false again ,
                               # totally optional and application dependent,
                               # can also be done from other subroutines
@@ -359,3 +350,4 @@ while True:
     modebutton_last_state = False # see above
     isobutton_last_state = False # see above
     now = utime.time()
+
