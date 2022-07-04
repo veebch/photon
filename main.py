@@ -31,8 +31,8 @@ modes= ["AmbientShutterSpeed","AmbientAperture"]
 fstops = list(reversed(fstops))
 
 # For conversiot from ADC to EV
-calib1 = (9200,7.4)            # This is the Calibration that maps a ADC reading to an EV reading from a lightmeter (assumes linearity). 
-calib2 = (8250,5.7)            # EV readings from a Sekonic 558. If components are consistent, these wont need changing.
+calib1 = (10300,11.9)            # This is the Calibration that maps a ADC reading to an EV reading from a lightmeter (assumes linearity). 
+calib2 = (8400,6.9)            # EV readings from a Sekonic 558. If components are consistent, these wont need changing.
 
 #
 #  Invert 2x2 matrix  A = a  b  to solve the simultaneous equation for the straight line
@@ -248,6 +248,7 @@ def displaynum(aperture,speed,iso,mode, isoadjust, lastmeasure):
     howgrey=max(55,howgrey)
     wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(howgrey,howgrey,howgrey),bgcolor=0, verbose=False)
     wrimem.printstring(str(round(delta,1))+"EV")
+    #wrimem.printstring(str(readLight(photoPIN))) Uncomment for calibration
     if isoadjust:
         box=SSD.rgb(255,0,0)
     else:
