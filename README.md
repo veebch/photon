@@ -13,8 +13,9 @@ An incident light-meter is an essential tool in photography. The sophisticated c
 - Raspberry Pi Pico                     
 - Rotary encoder              (adjust settings and measure)
 - Momentary switch            (to toggle mode)
-- Photodiode                  (a Vishay BPW21R - in photovoltaic mode) 
-- Resistor                    (220 ohm, in series with photodiode) 
+- Photodiode                  (a Vishay BPW21R) 
+- Resistor                    (220 ohm, in series with photodiode)
+- Op Amp                      (Current to Voltage conversion)
 - LiPo battery
 - PIR Dome
 
