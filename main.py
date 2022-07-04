@@ -45,7 +45,7 @@ fstops = list(reversed(fstops))
 
 
 # Other Parameters
-additiveerror = -2.2                 # An additive fudge factor for EV to adjust brightness...need to assess whether this makes sense
+additiveerror = -2.2                 # An additive fudge factor for EV to adjust brightness. This is the same as a proportional scaling on brightness because logarithms (?). If so, we're assuming brightness is proportional to brightness in lumens
 height = 128                         # the height of the oled
 pdc = Pin(20, Pin.OUT, value=0)
 pcs = Pin(17, Pin.OUT, value=1)
