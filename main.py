@@ -45,7 +45,7 @@ fstops = list(reversed(fstops))
 
 
 # Other Parameters
-brightnessmultiplier = .19           # A fudge factor to turn brightness into lux, assuming they are proportional
+additiveerror = -2.2                 # An additive fudge factor for EV to adjust brightness...need to assess whether this makes sense
 height = 128                         # the height of the oled
 pdc = Pin(20, Pin.OUT, value=0)
 pcs = Pin(17, Pin.OUT, value=1)
@@ -155,10 +155,11 @@ def button(pin):
     global button_last_state
     global button_current_state
     global lastmeasure
+    global red, green, blue
     if button_current_state != button_last_state:
         utime.sleep(.2)
         print("Measure")
-        lastmeasure=sensorread()
+        red,green, blue,lastmeasure=sensorread()
         button_last_state = button_current_state
         print(lastmeasure)
     return
@@ -194,17 +195,15 @@ def isobutton(pin):
 def sensorread():
     rgbc_raw = bh1745.rgbc_raw()
     rgb_clamped = bh1745.rgbc_clamped()
-    rgb_scaled = bh1745.rgbc_scaled()
-    print("Scaled: #{:02x}{:02x}{:02x}".format(*rgb_scaled))
-    brightness=rgbc_raw[3]*brightnessmultiplier
+    brightness=rgbc_raw[3]
     print("Clamped: {}, {}, {}, {}".format(*rgb_clamped))
     print("Bright="+str(brightness))
-    EV = math.log2(brightness/2.5)
-    return EV
+    EV = math.log2(brightness/2.5)+additiveerror
+    return rgb_clamped[0],rgb_clamped[1],rgb_clamped[2],EV
 
 
 # Screen to display on OLED
-def displaynum(aperture,speed,iso,mode, isoadjust, lastmeasure):
+def displaynum(aperture,speed,iso,mode, isoadjust, lastmeasure, red, green, blue):
     #delta=-lastmeasure+sensorread()
     if mode=="AmbientAperture":
         textA=SSD.rgb(0,255,0)
@@ -233,7 +232,7 @@ def displaynum(aperture,speed,iso,mode, isoadjust, lastmeasure):
     wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(255,255,0),bgcolor=0, verbose=False)
     wrimem.printstring(str(iso))
     CWriter.set_textpos(ssd,105,0)
-    wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(100,100,100),bgcolor=0, verbose=False)
+    wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(red,green,blue),bgcolor=0, verbose=False)
     wrimem.printstring(str(round(lastmeasure,1))+"EV") # Uncomment for calibration
     if isoadjust:
         box=SSD.rgb(255,0,0)
@@ -303,7 +302,7 @@ print(mode)
 apertureindex = 26   # f8
 isoindex = 15        # iso 100
 lastcounter=0
-lastmeasure=sensorread()
+red, green, blue, lastmeasure=sensorread()
 speedindex = otherindex(apertureindex, isoindex, mode, lastmeasure)
 while True:
     iso=isonum[isoindex]
@@ -331,7 +330,7 @@ while True:
             # Now, derive aperture from shutter speed choice and lastmeasure
             apertureindex = otherindex(speedindex, isoindex, mode, lastmeasure)
         counter=0
-        displaynum(aperture, speed, iso,mode, isoadjust,lastmeasure)
+        displaynum(aperture, speed, iso,mode, isoadjust,lastmeasure, red,green,blue)
     lastcounter=counter
     button_last_state = False # reset button last state to false again ,
                               # totally optional and application dependent,
