@@ -41,5 +41,5 @@ where $t$ is shutter speed and $N$ is f-stop. The value is then rounded to the n
 
 # To Do
 
-- Power management. 
-- Flash measurement.
+- Power management
+- Flash measurement (add integrator circuit?)
