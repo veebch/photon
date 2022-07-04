@@ -38,28 +38,15 @@ modes= ["AmbientShutterSpeed","AmbientAperture"]
 
 fstops = list(reversed(fstops))
 
-# For conversiot from ADC to EV
-calib1 = (-13,6)          # This is the Calibration that maps abrightness reading to an EV reading from a lightmeter (assumes linearity). 
-calib2 = (-15.2,0)            # EV readings from a Sekonic 558. If components are consistent, these wont need changing.
-
 #
 #  Invert 2x2 matrix  A = a  b  to solve the simultaneous equation for the straight line
 #                         c  d
 #
 
-a= calib1[0]
-b= 1
-c= calib2[0]
-d= 1 
-det= 1/(a*d-b*c)
-
-# y= mx + i 
-m = det*( d * calib1[1] - b * calib2[1])
-i = det*(-c * calib1[1] + a * calib2[1])
 
 # Other Parameters
-
-height = 128                         #the height of the oled
+brightnessmultiplier = .19           # A fudge factor to turn brightness into lux, assuming they are proportional
+height = 128                         # the height of the oled
 pdc = Pin(20, Pin.OUT, value=0)
 pcs = Pin(17, Pin.OUT, value=1)
 prst = Pin(21, Pin.OUT, value=1)
@@ -206,9 +193,13 @@ def isobutton(pin):
 
 def sensorread():
     rgbc_raw = bh1745.rgbc_raw()
-    brightness=rgbc_raw[3]
-    print(brightness)
-    EV = brightness * m + i # Assuming linear response in current when exposed to light
+    rgb_clamped = bh1745.rgbc_clamped()
+    rgb_scaled = bh1745.rgbc_scaled()
+    print("Scaled: #{:02x}{:02x}{:02x}".format(*rgb_scaled))
+    brightness=rgbc_raw[3]*brightnessmultiplier
+    print("Clamped: {}, {}, {}, {}".format(*rgb_clamped))
+    print("Bright="+str(brightness))
+    EV = math.log2(brightness/2.5)
     return EV
 
 
@@ -243,8 +234,7 @@ def displaynum(aperture,speed,iso,mode, isoadjust, lastmeasure):
     wrimem.printstring(str(iso))
     CWriter.set_textpos(ssd,105,0)
     wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(100,100,100),bgcolor=0, verbose=False)
-    #wrimem.printstring(str(round(delta,1))+"EV")
-    wrimem.printstring(str(round(lastmeasure,1))) # Uncomment for calibration
+    wrimem.printstring(str(round(lastmeasure,1))+"EV") # Uncomment for calibration
     if isoadjust:
         box=SSD.rgb(255,0,0)
     else:
@@ -350,4 +340,5 @@ while True:
     modebutton_last_state = False # see above
     isobutton_last_state = False # see above
     now = utime.time()
+
 
