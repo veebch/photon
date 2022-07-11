@@ -198,7 +198,10 @@ def sensorread():
     brightness=rgbc_raw[3]
     print("Clamped: {}, {}, {}, {}".format(*rgb_clamped))
     print("Bright="+str(brightness))
-    EV = math.log2(brightness/2.5)+additiveerror
+    try:
+        EV = math.log2(brightness/2.5)+additiveerror
+    except:
+        EV = -10
     return rgb_clamped[0],rgb_clamped[1],rgb_clamped[2],EV
 
 
