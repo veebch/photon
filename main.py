@@ -18,15 +18,43 @@ import math
 import gc
 import pimoroni_i2c
 import breakout_bh1745
+import uasyncio as asyncio
+from primitives.pushbutton import Pushbutton
+
 # Display setup
 from drivers.ssd1351.ssd1351_16bit import SSD1351 as SSD
+
+def splash(string):
+    wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(55,55,55),bgcolor=0)
+    CWriter.set_textpos(ssd, 0,0)
+    wri.printstring('{:.0f}%'.format(percentage))
+    wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(255,255,0),bgcolor=0, verbose=False )
+    CWriter.set_textpos(ssd, 90,25)
+    wri.printstring('veeb.ch/')
+    ssd.show()
+    utime.sleep(1)
+    for x in range(25):
+        wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(55,55,55),bgcolor=0)
+        CWriter.set_textpos(ssd, 0,0)
+        wri.printstring('{:.0f}%'.format(percentage))
+        wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(10*x,10*x,10*x),bgcolor=0)
+        CWriter.set_textpos(ssd, 55,25)
+        wri.printstring(string)
+        wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(255,255,0),bgcolor=0, verbose=False )
+        CWriter.set_textpos(ssd, 90,25)
+        wri.printstring('veeb.ch/')
+        ssd.show()
+    utime.sleep(1)
+    return
+
+# Initialise the Sensor
 
 PINS_BREAKOUT_GARDEN = {"sda": 0, "scl": 1}
 
 I2C = pimoroni_i2c.PimoroniI2C(**PINS_BREAKOUT_GARDEN)
 bh1745 = breakout_bh1745.BreakoutBH1745(I2C)
-
 bh1745.leds(False)
+
 # Values for Fstop, Shutter Speed and ISO
 
 fstops= [.6,.7,.8,.9,1,1.1,1.3,1.4,1.6,1.8,2,2.2,2.5,2.8,3.2,3.6,4,4.5,5,5.6,6.3,7.1,8,9,10,11,13,14,16,18,20,22,25,29,32,36,40,45,51,57,64,72,81,90,102,114,128,144,161]
@@ -38,14 +66,8 @@ modes= ["AmbientShutterSpeed","AmbientAperture"]
 
 fstops = list(reversed(fstops))
 
-#
-#  Invert 2x2 matrix  A = a  b  to solve the simultaneous equation for the straight line
-#                         c  d
-#
-
-
 # Other Parameters
-additiveerror = -2.2                 # An additive fudge factor for EV to adjust brightness...need to assess whether this makes sense
+additiveerror = -2.2                 # An additive fudge factor for EV to adjust brightness. This is the same as a proportional scaling on brightness because logarithms (?). If so, we're assuming brightness is proportional to brightness in lumens
 height = 128                         # the height of the oled
 pdc = Pin(20, Pin.OUT, value=0)
 pcs = Pin(17, Pin.OUT, value=1)
@@ -65,7 +87,7 @@ percentage = 100 * ((voltage - empty_battery) / (full_battery - empty_battery))
 if percentage > 100:
     percentage = 100
 
-# Splash Screen
+# Splash Setup
 
 spi = SPI(0,
                   baudrate=10000000,
@@ -78,21 +100,8 @@ spi = SPI(0,
                   miso=Pin(16))
 gc.collect()  # Precaution before instantiating framebuf
 ssd = SSD(spi, pcs, pdc, prst, height)  # Create a display instance
-ssd.fill(0)
 
-
-wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(55,55,55),bgcolor=0)
-CWriter.set_textpos(ssd, 0,0)
-wri.printstring('{:.0f}%'.format(percentage))
-wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(255,255,255),bgcolor=0)
-CWriter.set_textpos(ssd, 55,25)
-wri.printstring('incident')
-wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(255,255,0),bgcolor=0, verbose=False )
-CWriter.set_textpos(ssd, 90,25)
-wri.printstring('veeb.ch/')
-
-ssd.show()
-utime.sleep(2)
+splash('incident')
 
 # define encoder pins and mode switch pin
 
@@ -112,13 +121,6 @@ ledPin = Pin(25, mode = Pin.OUT, value = 0) # Onboard led on GPIO 25
 
 outA_last = 0 # registers the last state of outA pin / CLK pin
 outA_current = 0 # registers the current state of outA pin / CLK pin
-
-button_last_state = False # initial state of encoder's button 
-button_current_state = "" # empty string ---> current state of button
-modebutton_last_state = False # initial state of encoder's button 
-modebutton_current_state = "" # empty string ---> current state of button
-isobutton_last_state = False # initial state of encoder's button 
-isobutton_current_state = "" # empty string ---> current state of button
 
 # Read the last state of CLK pin in the initialisaton phase of the program 
 outA_last = outA.value() # lastStateCLK
@@ -152,8 +154,6 @@ def encoder(pin):
 # interrupt handler function (IRQ) for SW (switch) pin
 def button(pin):
     # get global variable
-    global button_last_state
-    global button_current_state
     global lastmeasure
     global red, green, blue
     if button_current_state != button_last_state:
@@ -166,8 +166,6 @@ def button(pin):
 
 def modebutton(pin):
     # get global variable
-    global modebutton_last_state
-    global modebutton_current_state
     global mode
     global modes
     if modebutton_current_state != modebutton_last_state:
@@ -183,8 +181,6 @@ def modebutton(pin):
 # interrupt handler function (IRQ) for SW (switch) pin
 def isobutton(pin):
     # get global variable
-    global isobutton_last_state
-    global isobutton_current_state
     global isoadjust
     if isobutton_current_state != isobutton_last_state:
         utime.sleep(.2)
@@ -201,7 +197,7 @@ def sensorread():
     try:
         EV = math.log2(brightness/2.5)+additiveerror
     except:
-        EV = -10
+        EV= -100
     return rgb_clamped[0],rgb_clamped[1],rgb_clamped[2],EV
 
 
@@ -247,26 +243,22 @@ def displaynum(aperture,speed,iso,mode, isoadjust, lastmeasure, red, green, blue
     ssd.show()
     return
 
-def beanaproblem(string):
-    refresh(ssd, True)  # Clear any prior image
-    utime.sleep(2)
-
 def otherindex(index, isoindex, mode, lastmeasure):
     Eiso= lastmeasure + math.log2(float(isonum[isoindex]/100))
     if mode=="AmbientAperture":
-        aperture=fstops[apertureindex]
+        aperture=fstops[index]
         t= (float(aperture)**2)/(2**Eiso)
         #print(t)
         derivedindex = min(range(len(sspeed)), key=lambda i: abs(eval(sspeed[i])-t))
     elif mode=='AmbientShutterSpeed':
-        speed=sspeed[speedindex]
+        speed=sspeed[index]
         print(eval(speed))
         N = math.sqrt(eval(speed)*2**(Eiso))
         #print(N)
         derivedindex = min(range(len(fstops)), key=lambda i: abs(float(fstops[i])-N))
     return derivedindex
 
-# Attach interrupt to Pins
+# Attach interrupt to Pins and set up buttons
 
 # attach interrupt to the outA pin ( CLK pin of encoder module )
 outA.irq(trigger = Pin.IRQ_RISING | Pin.IRQ_FALLING,
@@ -276,71 +268,70 @@ outA.irq(trigger = Pin.IRQ_RISING | Pin.IRQ_FALLING,
 outB.irq(trigger = Pin.IRQ_RISING | Pin.IRQ_FALLING ,
               handler = encoder)
 
-# attach interrupt to the switch pin ( SW pin of encoder module )
-switch.irq(trigger = Pin.IRQ_FALLING ,
-           handler = button)
-
-# attach interrupt to the switch pin ( SW pin of encoder module )
-modeswitch.irq(trigger = Pin.IRQ_FALLING ,
-           handler = modebutton)
-
-# attach interrupt to the switch pin ( SW pin of encoder module )
-isoswitch.irq(trigger = Pin.IRQ_FALLING ,
-           handler = isobutton)
+modebtn = Pin(15, Pin.IN, Pin.PULL_UP)  # Adapt for your hardware
+modepb = Pushbutton(modebtn, suppress=True)
 
 
+isobtn = Pin(13, Pin.IN, Pin.PULL_UP)  # Adapt for your hardware
+isopb = Pushbutton(isobtn, suppress=True)
 
-# Main Logic
+measurebtn = Pin(8, Pin.IN, Pin.PULL_UP)  # Adapt for your hardware
+measurepb = Pushbutton(measurebtn, suppress=True)
 isoadjust=False
-pin=0
-counter= 0
-lastupdate = utime.time()  
-refresh(ssd, True)  # Initialise and clear display.
 
-lasterror = 0
-# The Tweakable values that will help tune for our use case. TODO: Make accessible via menu on OLED
-output=0
-mode=modes[1]
-print(mode)
-apertureindex = 26   # f8
-isoindex = 15        # iso 100
-lastcounter=0
-red, green, blue, lastmeasure=sensorread()
-speedindex = otherindex(apertureindex, isoindex, mode, lastmeasure)
-while True:
-    iso=isonum[isoindex]
-    speed=sspeed[speedindex]
-    aperture=fstops[apertureindex]
-    encoder(pin)   
-    if counter!=lastcounter or button_current_state != button_last_state:
-    # adjust aperture or shutter speed, depending on mode selected
-        if isoadjust:
-            isoindex=isoindex + counter
-            isoindex=max(0,isoindex)
-            isoindex=min(len(isonum)-1,isoindex)
-        if mode=="AmbientAperture":
-            if not isoadjust:
-                apertureindex=apertureindex + counter
-                apertureindex=max(0,apertureindex)
-                apertureindex=min(len(fstops)-1,apertureindex)
-            # Now, derive shutter speed from aperture choice and lastmeasure
-            speedindex = otherindex(apertureindex, isoindex, mode, lastmeasure)
-        elif  mode=='AmbientShutterSpeed':
-            if not isoadjust:
-                speedindex=speedindex + counter
-                speedindex=max(0,speedindex)
-                speedindex=min(len(sspeed)-1,speedindex)
-            # Now, derive aperture from shutter speed choice and lastmeasure
-            apertureindex = otherindex(speedindex, isoindex, mode, lastmeasure)
-        counter=0
-        displaynum(aperture, speed, iso,mode, isoadjust,lastmeasure, red,green,blue)
-    lastcounter=counter
-    button_last_state = False # reset button last state to false again ,
-                              # totally optional and application dependent,
-                              # can also be done from other subroutines
-                              # or from the main loop
-    modebutton_last_state = False # see above
-    isobutton_last_state = False # see above
-    now = utime.time()
-
+async def main():
+    measure_short_press = measurepb.release_func(sensorread, ())
+    measure_double_press = measurepb.double_func(print, ("DOUBLE MEASURE",))
+    measure_long_press = measurepb.long_func(print, ("LONG MEASURE",))  # Some kind of history plot?
+    iso_short_press = isopb.release_func(print, ("Single ISO",))
+    iso_double_press = isopb.double_func(print, ("DOUBLE ISO",))
+    iso_long_press = isopb.long_func(print, ("LONG ISO",))  # Some kind of history plot?
+    mode_short_press = modepb.release_func(print, ("SINGLE MODE",))
+    mode_double_press = modepb.double_func(print, ("DOUBLE MODE",))
+    mode_long_press = modepb.long_func(print, ("LONG MODE",))  # Some kind of history plot?
+    pin=0
+    counter= 0
+    lastupdate = utime.time()  
+    lasterror = 0
+    # The Tweakable values that will help tune for our use case. TODO: Make accessible via menu on OLED
+    output=0
+    mode=modes[1]
+    print(mode)
+    apertureindex = 26   # f8
+    isoindex = 15        # iso 100
+    lastcounter=0
+    red, green, blue, lastmeasure=sensorread()
+    speedindex = otherindex(apertureindex, isoindex, mode, lastmeasure)
+    while True:
+        iso=isonum[isoindex]
+        speed=sspeed[speedindex]
+        aperture=fstops[apertureindex]
+        encoder(pin)   
+        if counter!=lastcounter:
+        # adjust aperture or shutter speed, depending on mode selected
+            if isoadjust:
+                isoindex=isoindex + counter
+                isoindex=max(0,isoindex)
+                isoindex=min(len(isonum)-1,isoindex)
+            if mode=="AmbientAperture":
+                if not isoadjust:
+                    apertureindex=apertureindex + counter
+                    apertureindex=max(0,apertureindex)
+                    apertureindex=min(len(fstops)-1,apertureindex)
+                # Now, derive shutter speed from aperture choice and lastmeasure
+                speedindex = otherindex(apertureindex, isoindex, mode, lastmeasure)
+            elif  mode=='AmbientShutterSpeed':
+                if not isoadjust:
+                    speedindex=speedindex + counter
+                    speedindex=max(0,speedindex)
+                    speedindex=min(len(sspeed)-1,speedindex)
+                # Now, derive aperture from shutter speed choice and lastmeasure
+                apertureindex = otherindex(speedindex, isoindex, mode, lastmeasure)
+            counter=0
+            displaynum(aperture, speed, iso,mode, isoadjust,lastmeasure, red,green,blue)
+        lastcounter=counter
+        now = utime.time()
+    await asyncio.sleep(.01)
+        
+asyncio.run(main())
 
