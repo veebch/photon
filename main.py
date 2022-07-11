@@ -25,23 +25,23 @@ def splash(string):
     wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(55,55,55),bgcolor=0, verbose=False)
     CWriter.set_textpos(ssd, 0,0)
     wri.printstring('{:.0f}%'.format(percentage))
-    wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(255,255,0),bgcolor=0, verbose=False )
+    wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(50,50,0),bgcolor=0, verbose=False )
     CWriter.set_textpos(ssd, 90,25)
     wri.printstring('veeb.ch/')
     ssd.show()
     utime.sleep(.5)
-    for x in range(10):
+    for x in range(11):
         wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(55,55,55),bgcolor=0, verbose=False)
         CWriter.set_textpos(ssd, 0,0)
         wri.printstring('{:.0f}%'.format(percentage))
         wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(25*x,25*x,25*x),bgcolor=0, verbose=False)
         CWriter.set_textpos(ssd, 55,25)
         wri.printstring(string)
-        wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(255,255,0),bgcolor=0, verbose=False )
+        wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(50,50,0),bgcolor=0, verbose=False )
         CWriter.set_textpos(ssd, 90,25)
         wri.printstring('veeb.ch/')
         ssd.show()
-    utime.sleep(1)
+    utime.sleep(2)
     return
 
 
