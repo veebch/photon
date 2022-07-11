@@ -107,8 +107,8 @@ ssd.fill(0)
 splash('incident')
 # define encoder pins and mode switch pin
 
-switch = Pin(8, mode=Pin.IN, pull = Pin.PULL_UP)     # inbuilt switch on the rotary encoder, ACTIVE LOW
-modeswitch = Pin(15, mode=Pin.IN, pull = Pin.PULL_UP) # 'mode' switch, the additional momentary switch
+switch = Pin(15, mode=Pin.IN, pull = Pin.PULL_UP)     # inbuilt switch on the rotary encoder, ACTIVE LOW
+modeswitch = Pin(8, mode=Pin.IN, pull = Pin.PULL_UP) # 'mode' switch, the additional momentary switch
 isoswitch = Pin(13, mode=Pin.IN, pull = Pin.PULL_UP) # 'mode' switch, the additional momentary switch
 
 outA = Pin(6, mode=Pin.IN) # Pin CLK of encoder
@@ -271,7 +271,7 @@ def otherindex(index, isoindex, mode, lastmeasure):
         derivedindex = min(range(len(sspeed)), key=lambda i: abs(eval(sspeed[i])-t))
     elif mode=='AmbientShutterSpeed':
         speed=sspeed[speedindex]
-        print(eval(speed))
+        #print(eval(speed))
         N = math.sqrt(eval(speed)*2**(Eiso))
         #print(N)
         derivedindex = min(range(len(fstops)), key=lambda i: abs(float(fstops[i])-N))
