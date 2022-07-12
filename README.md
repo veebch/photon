@@ -25,9 +25,9 @@ An incident light-meter is an essential tool in photography. The sophisticated c
 
 
 
-Solder the power shim to the pico. Connect the Lipo battery to the shim. Then connect the rest of the components to the GPIO pins as follows:
+Solder the power shim to the pico. Connect the Lipo battery to the shim. Then connect the rest of the components to the GPIO pins as follows.
 
-The light sensor:
+### light sensor
 
 | [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | OLED |
 |-----------|------|
@@ -35,7 +35,7 @@ The light sensor:
 |   1      | SCL  |
 
 
-The OLED:
+### The OLED
 
 | [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | OLED |
 |-----------|------|
@@ -46,7 +46,7 @@ The OLED:
 |   21      | RST  |
 
 
-The Rotary Encoder:
+### The rotary encoder:
 
 | [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | Rotary Encoder |
 |-----------|----------------|
@@ -54,7 +54,7 @@ The Rotary Encoder:
 |   7        | DT             |
 |   8       | SW             |
 
-Switches:
+### Switches
 
 | [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | Switches |
 |-----------|----------------|
