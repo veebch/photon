@@ -73,7 +73,7 @@ git clone https://github.com/veebch/photon.git
 cd photon
 ```
 
-Copy the contents to the repository using [ampy](https://learn.adafruit.com/micropython-basics-load-files-and-run-code/install-ampy) and the commands.
+Copy the contents to the repository using [ampy]([https://learn.adafruit.com/micropython-basics-load-files-and-run-code/install-ampy](https://pypi.org/project/adafruit-ampy/)) and the commands.
 ```
 sudo ampy -p /dev/ttyACM0 put drivers
 sudo ampy -p /dev/ttyACM0 put gui
