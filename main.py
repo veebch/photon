@@ -18,6 +18,7 @@ import breakout_bh1745
 import utime
 import sys
 import math
+import gc
 
 def splash(string):
     wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(55,55,55),bgcolor=0, verbose=False)
@@ -282,8 +283,8 @@ lastcounter=0
 lastupdate = utime.time()  
 red, green, blue, lastmeasure=sensorread()
 speedindex = otherindex(apertureindex, isoindex, mode, lastmeasure)
-
-refresh(ssd, True)  # Initialise and clear display.
+gc.enable()                          # enable garbage collection
+refresh(ssd, True)                   # Initialise and clear display.
 splash('photon')
 
 while True:
@@ -319,4 +320,5 @@ while True:
                                   # or from the main loop
     modebutton_last_state = False # see above
     isobutton_last_state = False  # see above
+    gc.collect()                  # force garbage collect
     now = utime.time()
