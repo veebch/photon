@@ -6,7 +6,7 @@ Photon reproduces the some of the functionality of more expensive tools, using a
 
 ## Background
 
-An incident light-meter is an essential tool in photography. The sophisticated computation baked-in to modern cameras devotes a lot of effort guessing 'how much light is falling on the subject?". If you have the option of getting to the subject and taking a reading, everything becomes a lot easier. 
+An incident light-meter can be an essential tool in photography (especially film photography with old caneras). The sophisticated computation baked-in to modern cameras devotes a lot of effort guessing 'how much light is falling on the subject?". If you have the option of getting to the subject and taking a reading, no guessing is required and everything becomes a lot easier. 
 
 ## Components
 
