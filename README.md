@@ -8,8 +8,7 @@ An open-source light-meter that reproduces the functionality of more expensive t
 
 An incident light-meter is an essential tool in photography. The sophisticated computation baked-in to modern cameras devotes a lot of effort guessing 'how much light is falling on the subject?". If you have the option of getting to the subject and taking a reading, everything becomes a lot easier. 
 
-# Hardware
-
+# Assembly
 - Raspberry Pi Pico                     
 - Rotary encoder              (adjust settings and measure)
 - 2x Momentary switch         (keyboard switch and a 6x6mm microswitch to measure and set iso adjust mode respectively)
@@ -18,7 +17,7 @@ An incident light-meter is an essential tool in photography. The sophisticated c
 - Wires galore
 - PIR Dome
 
-# Hardware Assembly
+## Hardware
 
 Solder the power shim to the pico. Connect the Lipo battery to the shim. Then connect the rest of the components as follows:
 
@@ -57,7 +56,7 @@ The Rotary Encoder connects to the GPIO:
 
 
 
-# Software installation
+# Software
 
 Download a `uf2` image from [pimoroni](https://github.com/pimoroni/pimoroni-pico/releases). 
 
@@ -74,7 +73,8 @@ Copy the contents to the repository using ampy using the command.
 
 ```
 
-# Calculating
+# Appendix
+## Calculating
 
 The simple calculations that lead to a reading are based on the Wikipedia entry on [exposure value](https://en.wikipedia.org/wiki/Exposure_value).
 
@@ -93,7 +93,7 @@ $$N = \sqrt{t 2^{ E_{ISO}}}$$
 where $t$ is shutter speed and $N$ is f-stop. The value is then rounded to the nearest nominal value and displayed on the screen End of maths.
 
 
-# To Do
+## To Do
 
 - Power management
 - Flash measurement (add integrator circuit?)
