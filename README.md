@@ -1,6 +1,6 @@
 [![YouTube Channel Views](https://img.shields.io/youtube/channel/views/UCz5BOU9J9pB_O0B8-rDjCWQ?label=YouTube&style=social)](https://www.youtube.com/channel/UCz5BOU9J9pB_O0B8-rDjCWQ)
 
-# Incident
+# Photon
 
 An open-source light-meter that reproduces the functionality of more expensive tools, using a few inexpensive/readily available parts. There is soldering involved, but don't let that put you off.
 
