@@ -11,16 +11,13 @@ import gui.fonts.freesans20 as freesans20
 import gui.fonts.quantico40 as quantico40
 from gui.core.writer import CWriter
 from gui.core.nanogui import refresh
-import utime
+from drivers.ssd1351.ssd1351_16bit import SSD1351 as SSD
 from machine import Pin,I2C, SPI,ADC
-from rp2 import PIO, StateMachine, asm_pio
-import sys
-import math
-import gc
 import pimoroni_i2c
 import breakout_bh1745
-# OLED Display setup
-from drivers.ssd1351.ssd1351_16bit import SSD1351 as SSD
+import utime
+import sys
+import math
 
 def splash(string):
     wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(55,55,55),bgcolor=0, verbose=False)
@@ -47,7 +44,6 @@ def splash(string):
 
 # interrupt handler function (IRQ) for CLK and DT pins
 def encoder(pin):
-    # get global variables
     global outA_last
     global outA_current
     global counter
@@ -65,15 +61,12 @@ def encoder(pin):
             counter = -1
         else:
             counter = 1
-
     # update the last state of outA pin / CLK pin with the current state
     outA_last = outA_current
     return 
     
-
 # interrupt handler function (IRQ) for measure button
 def button(pin):
-    # get global variable
     global button_last_state
     global button_current_state
     global lastmeasure
@@ -88,7 +81,6 @@ def button(pin):
 
 # interrupt handler function (IRQ) for SW (switch) pin
 def modebutton(pin):
-    # get global variable
     global modebutton_last_state
     global modebutton_current_state
     global mode
@@ -105,7 +97,6 @@ def modebutton(pin):
 
 # interrupt handler function (IRQ) for iso switch
 def isobutton(pin):
-    # get global variable
     global isobutton_last_state
     global isobutton_current_state
     global isoadjust
@@ -115,6 +106,7 @@ def isobutton(pin):
         isobutton_last_state = isobutton_current_state
     return
 
+# read the value from the light sensor
 def sensorread():
     rgbc_raw = bh1745.rgbc_raw()
     rgb_clamped = bh1745.rgbc_clamped()
@@ -170,6 +162,7 @@ def displaynum(aperture,speed,iso,mode, isoadjust, lastmeasure, red, green, blue
     ssd.show()
     return
 
+# Derive the appropriate stop value, based on the reading from the sensor and the chosen mode
 def otherindex(index, isoindex, mode, lastmeasure):
     Eiso= lastmeasure + math.log2(float(isonum[isoindex]/100))
     if mode=="AmbientAperture":
@@ -231,7 +224,6 @@ spi = SPI(0,
                   firstbit=SPI.MSB,
                   sck=psck,
                   mosi=pmosi)
-gc.collect()  # Precaution before instantiating framebuf
 ssd = SSD(spi, pcs, pdc, prst, height)  # Create a display instance
 
 # Attach interrupt to Pins
