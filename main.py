@@ -45,90 +45,6 @@ def splash(string):
     utime.sleep(2)
     return
 
-
-LIGHTSENSOR = {"sda": 0, "scl": 1}
-
-I2C = pimoroni_i2c.PimoroniI2C(**LIGHTSENSOR)
-bh1745 = breakout_bh1745.BreakoutBH1745(I2C)
-
-bh1745.leds(False)
-# Values for Fstop, Shutter Speed and ISO
-
-fstops= [.6,.7,.8,.9,1,1.1,1.3,1.4,1.6,1.8,2,2.2,2.5,2.8,3.2,3.6,4,4.5,5,5.6,6.3,7.1,8,9,10,11,13,14,16,18,20,22,25,29,32,36,40,45,51,57,64,72,81,90,102,114,128,144,161]
-sspeed= ["(1/ 8000)","(1/ 6400)","(1/ 5000)","(1/ 4000)","(1/ 3200)","(1/ 2500)","(1/ 2000)","(1/ 1600)","(1/ 1250)","(1/ 1000)","(1/ 800)","(1/ 640)","(1/ 500)","(1/ 400)","(1/ 320)","(1/ 250)","(1/ 200)", "(1/ 160)","(1/ 125)","(1/ 100)","(1/ 80)","(1/ 60)","(1/ 50)","(1/ 40)","(1/ 30)","(1/ 25)","(1/ 20)","(1/ 15)","(1/ 13)","(1/ 10)","(1/ 8)","(1/ 6)","(1/ 5)","(1/ 4)","0.3","0.4","0.5","0.6","0.8","1","1.3","1.6","2","2.5","3.2","4","5","6","8","10","13","15","20","25","30","40","50","60"]
-isonum= [3,4,5,6,8,10,12,16,20,25,32,40,50,64,80,100,125,160,200,250,320,400,500,640,800,1000,1250,1600,2000,2500,3200, 4000, 5000,6400,8000]
-modes= ["AmbientShutterSpeed","AmbientAperture"]
-
-# this is a fix for the fact that we want all arrays in ascending 'brightness'
-
-fstops = list(reversed(fstops))
-
-# Parameters
-additiveerror = -2.2                 # An additive fudge factor for EV to adjust brightness...need to assess whether this makes sense
-height = 128                         # the height of the oled
-pdc = Pin(20, Pin.OUT, value=0)
-pcs = Pin(17, Pin.OUT, value=1)
-prst = Pin(21, Pin.OUT, value=1)
-
-# Power Management
-
-vsys = ADC(29)              # reads the system input voltage
-charging = Pin(24, Pin.IN)  # reading GP24 tells us whether or not USB power is connected
-conversion_factor = 3 * 3.3 / 65535
-
-full_battery = 4.2                  # these are our reference voltages for a full/empty battery, in volts
-empty_battery = 2.8                 # the values could vary by battery size/manufacturer so you might need to adjust them
-
-voltage = vsys.read_u16() * conversion_factor
-percentage = 100 * ((voltage - empty_battery) / (full_battery - empty_battery))
-if percentage > 100:
-    percentage = 100
-
-# Splash Screen
-
-spi = SPI(0,
-                  baudrate=10000000,
-                  polarity=1,
-                  phase=1,
-                  bits=8,
-                  firstbit=SPI.MSB,
-                  sck=Pin(18),
-                  mosi=Pin(19),
-                  miso=Pin(16))
-#gc.collect()  # Precaution before instantiating framebuf
-ssd = SSD(spi, pcs, pdc, prst, height)  # Create a display instance
-ssd.fill(0)
-
-splash('photon')
-# define encoder pins and mode switch pin
-
-switch = Pin(15, mode=Pin.IN, pull = Pin.PULL_UP)     # inbuilt switch on the rotary encoder, ACTIVE LOW
-modeswitch = Pin(8, mode=Pin.IN, pull = Pin.PULL_UP) # 'mode' switch, the additional momentary switch
-isoswitch = Pin(13, mode=Pin.IN, pull = Pin.PULL_UP) # 'mode' switch, the additional momentary switch
-
-outA = Pin(6, mode=Pin.IN) # Pin CLK of encoder
-outB = Pin(7, mode=Pin.IN) # Pin DT of encoder
-
-# Define LED pin
-
-ledPin = Pin(25, mode = Pin.OUT, value = 0) # Onboard led on GPIO 25
-
-
-# define global variables
-
-outA_last = 0 # registers the last state of outA pin / CLK pin
-outA_current = 0 # registers the current state of outA pin / CLK pin
-
-button_last_state = False # initial state of encoder's button 
-button_current_state = "" # empty string ---> current state of button
-modebutton_last_state = False # initial state of encoder's button 
-modebutton_current_state = "" # empty string ---> current state of button
-isobutton_last_state = False # initial state of encoder's button 
-isobutton_current_state = "" # empty string ---> current state of button
-
-# Read the last state of CLK pin in the initialisaton phase of the program 
-outA_last = outA.value() # lastStateCLK
-
 # interrupt handler function (IRQ) for CLK and DT pins
 def encoder(pin):
     # get global variables
@@ -243,7 +159,7 @@ def displaynum(aperture,speed,iso,mode, isoadjust, lastmeasure, red, green, blue
     wrimem.printstring(str(iso))
     CWriter.set_textpos(ssd,105,0)
     wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(red,green,blue),bgcolor=0, verbose=False)
-    wrimem.printstring(str(round(lastmeasure,1))+"EV") # Uncomment for calibration
+    wrimem.printstring(str(round(lastmeasure,1))+"EV") 
     if isoadjust:
         box=SSD.rgb(255,0,0)
     else:
@@ -269,8 +185,56 @@ def otherindex(index, isoindex, mode, lastmeasure):
         derivedindex = min(range(len(fstops)), key=lambda i: abs(float(fstops[i])-N))
     return derivedindex
 
-# Attach interrupt to Pins
+    
+# Hardware ################################################################################################
+try:
+    LIGHTSENSOR = {"sda": 0, "scl": 1}
+    I2C = pimoroni_i2c.PimoroniI2C(**LIGHTSENSOR)
+    bh1745 = breakout_bh1745.BreakoutBH1745(I2C)
+    bh1745.leds(False)
+except:
+    splash("sensor?") # A visual cue that therehas been an issue with the sensor setup
 
+# Pins Setup
+pdc = Pin(20, Pin.OUT, value=0)                       # OLED DC
+pcs = Pin(17, Pin.OUT, value=1)                       # OLED CS
+prst = Pin(21, Pin.OUT, value=1)                      # OLED RST
+psck = Pin(18)                                        # OLED SCK
+pmosi = Pin(19)                                       # OLED MOSI
+switch = Pin(15, mode=Pin.IN, pull = Pin.PULL_UP)     # inbuilt switch on the rotary encoder, ACTIVE LOW
+modeswitch = Pin(8, mode=Pin.IN, pull = Pin.PULL_UP)  # 'mode' switch, the additional momentary switch
+isoswitch = Pin(13, mode=Pin.IN, pull = Pin.PULL_UP)  # 'iso' switch, the additional momentary switch
+outA = Pin(6, mode=Pin.IN)                            # Pin CLK of encoder
+outB = Pin(7, mode=Pin.IN)                            # Pin DT of encoder
+ledPin = Pin(25, mode = Pin.OUT, value = 0)           # Onboard led on GPIO 25
+
+# Power Management
+vsys = ADC(29)                                        # reads the system input voltage
+charging = Pin(24, Pin.IN)                            # reading GP24 tells us whether or not USB power is connected
+conversion_factor = 3 * 3.3 / 65535
+
+full_battery = 4.2                  # these are our reference voltages for a full/empty battery, in volts
+empty_battery = 2.8                 # the values could vary by battery size/manufacturer so you might need to adjust them
+
+voltage = vsys.read_u16() * conversion_factor
+percentage = 100 * ((voltage - empty_battery) / (full_battery - empty_battery))
+if percentage > 100:
+    percentage = 100
+
+# setup screen
+height = 128                         # the height of the oled
+spi = SPI(0,
+                  baudrate=10000000,
+                  polarity=1,
+                  phase=1,
+                  bits=8,
+                  firstbit=SPI.MSB,
+                  sck=psck,
+                  mosi=pmosi)
+gc.collect()  # Precaution before instantiating framebuf
+ssd = SSD(spi, pcs, pdc, prst, height)  # Create a display instance
+
+# Attach interrupt to Pins
 # attach interrupt to the outA pin ( CLK pin of encoder module )
 outA.irq(trigger = Pin.IRQ_RISING | Pin.IRQ_FALLING,
               handler = encoder)
@@ -291,22 +255,46 @@ modeswitch.irq(trigger = Pin.IRQ_FALLING ,
 isoswitch.irq(trigger = Pin.IRQ_FALLING ,
            handler = isobutton)
 
+# define global variables
+outA_last = 0 # registers the last state of outA pin / CLK pin
+outA_current = 0 # registers the current state of outA pin / CLK pin
+
+button_last_state = False # initial state of encoder's button 
+button_current_state = "" # empty string ---> current state of button
+modebutton_last_state = False # initial state of encoder's button 
+modebutton_current_state = "" # empty string ---> current state of button
+isobutton_last_state = False # initial state of encoder's button 
+isobutton_current_state = "" # empty string ---> current state of button
+
+# Read the last state of CLK pin in the initialisaton phase of the program 
+outA_last = outA.value() # lastStateCLK
+
+# End Hardware ###################################################################################
+
 
 # Main Logic
+# Values for Fstop, Shutter Speed and ISO
+fstops= [.6,.7,.8,.9,1,1.1,1.3,1.4,1.6,1.8,2,2.2,2.5,2.8,3.2,3.6,4,4.5,5,5.6,6.3,7.1,8,9,10,11,13,14,16,18,20,22,25,29,32,36,40,45,51,57,64,72,81,90,102,114,128,144,161]
+sspeed= ["(1/ 8000)","(1/ 6400)","(1/ 5000)","(1/ 4000)","(1/ 3200)","(1/ 2500)","(1/ 2000)","(1/ 1600)","(1/ 1250)","(1/ 1000)","(1/ 800)","(1/ 640)","(1/ 500)","(1/ 400)","(1/ 320)","(1/ 250)","(1/ 200)", "(1/ 160)","(1/ 125)","(1/ 100)","(1/ 80)","(1/ 60)","(1/ 50)","(1/ 40)","(1/ 30)","(1/ 25)","(1/ 20)","(1/ 15)","(1/ 13)","(1/ 10)","(1/ 8)","(1/ 6)","(1/ 5)","(1/ 4)","0.3","0.4","0.5","0.6","0.8","1","1.3","1.6","2","2.5","3.2","4","5","6","8","10","13","15","20","25","30","40","50","60"]
+isonum= [3,4,5,6,8,10,12,16,20,25,32,40,50,64,80,100,125,160,200,250,320,400,500,640,800,1000,1250,1600,2000,2500,3200, 4000, 5000,6400,8000]
+modes= ["AmbientShutterSpeed","AmbientAperture"]
+
+fstops = list(reversed(fstops))      # this is a fix for the fact that we want all arrays in ascending 'brightness'
+additiveerror = -2.2                 # A stop adjustment for EV to adjust brightness. (addidtive implies a proportional relationship between brightness and lux, check maths)
+mode=modes[1]                        # AmbientAperture
+apertureindex = 26                   # f8
+isoindex = 15                        # iso 100
 isoadjust=False
 pin=0
 counter= 0
-lastupdate = utime.time()  
-refresh(ssd, True)  # Initialise and clear display.
-# The Tweakable values that will help tune for our use case. TODO: Make accessible via menu on OLED
-output=0
-mode=modes[1]
-print(mode)
-apertureindex = 26   # f8
-isoindex = 15        # iso 100
 lastcounter=0
+lastupdate = utime.time()  
 red, green, blue, lastmeasure=sensorread()
 speedindex = otherindex(apertureindex, isoindex, mode, lastmeasure)
+
+refresh(ssd, True)  # Initialise and clear display.
+splash('photon')
+
 while True:
     iso=isonum[isoindex]
     speed=sspeed[speedindex]
@@ -335,13 +323,9 @@ while True:
         counter=0
         displaynum(aperture, speed, iso,mode, isoadjust,lastmeasure, red,green,blue)
     lastcounter=counter
-    button_last_state = False # reset button last state to false again ,
-                              # totally optional and application dependent,
-                              # can also be done from other subroutines
-                              # or from the main loop
+    button_last_state = False     # reset button last state to false again ,
+                                  # can also be done from other subroutines
+                                  # or from the main loop
     modebutton_last_state = False # see above
-    isobutton_last_state = False # see above
+    isobutton_last_state = False  # see above
     now = utime.time()
-
-
-
