@@ -18,6 +18,33 @@ An incident light-meter is an essential tool in photography. The sophisticated c
 - Wires galore
 - PIR Dome
 
+# Wiring
+
+| [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | OLED |
+|-----------|------|
+|   19       | DIN/MOSI  |
+|   18      | CLK/SCK  |
+|   17      | CS  |
+|   20       | DC  |
+|   21      | RST  |
+
+
+- The Rotary Encoder connects to the GPIO as follows:
+
+| [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | Rotary Encoder |
+|-----------|----------------|
+|   6       | CLK            |
+|   7        | DT             |
+|   8       | SW             |
+
+
+| [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | Switches |
+|-----------|----------------|
+|   15       |       Measure      |
+|   13       |       ISO     |
+
+
+
 # Installation
 
 Download a `uf2` image from [pimoroni](https://github.com/pimoroni/pimoroni-pico/releases)
