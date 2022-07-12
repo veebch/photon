@@ -20,6 +20,8 @@ An incident light-meter is an essential tool in photography. The sophisticated c
 
 # Wiring
 
+The OLED connects to the GPIO as follows:
+
 | [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | OLED |
 |-----------|------|
 |   19       | DIN/MOSI  |
@@ -29,7 +31,7 @@ An incident light-meter is an essential tool in photography. The sophisticated c
 |   21      | RST  |
 
 
-- The Rotary Encoder connects to the GPIO as follows:
+The Rotary Encoder connects to the GPIO as follows:
 
 | [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | Rotary Encoder |
 |-----------|----------------|
