@@ -79,7 +79,7 @@ sudo ampy -p /dev/ttyACM0 put main.py
 Done! All the needed files should be on the pico and when you disconnect and power it on using the button on the power shim, it will autorun the script.
 
 # Appendix
-## Calculating
+## Derived formulas
 
 The simple calculations that lead to a reading are based on the Wikipedia entry on [exposure value](https://en.wikipedia.org/wiki/Exposure_value).
 
