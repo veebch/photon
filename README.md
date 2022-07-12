@@ -65,7 +65,7 @@ Solder the power shim to the pico. Connect the Lipo battery to the shim. Then co
 
 ## Software
 
-Download a `uf2` image from [pimoroni](https://github.com/pimoroni/pimoroni-pico/releases). 
+Download a `uf2` image from the [pimoroni github repo](https://github.com/pimoroni/pimoroni-pico/releases). 
 
 Clone this repository to your computer using the commands (from a terminal)
 
