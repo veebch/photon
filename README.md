@@ -18,7 +18,7 @@ An incident light-meter is an essential tool in photography. The sophisticated c
 - Wires galore
 - PIR Dome
 
-# Wiring
+# Hardware Assembly
 
 The OLED connects to the GPIO as follows:
 
@@ -47,7 +47,7 @@ The Rotary Encoder connects to the GPIO as follows:
 
 
 
-# Installation
+# Sodtware installation
 
 Download a `uf2` image from [pimoroni](https://github.com/pimoroni/pimoroni-pico/releases)
 
