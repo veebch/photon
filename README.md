@@ -76,6 +76,8 @@ sudo ampy -p /dev/ttyACM0 put color_setup.py
 sudo ampy -p /dev/ttyACM0 put main.py
 ```
 
+Done! All the needed files should be on the pico and when you disconnect and power it on using the button on the power shim, it will autorun the script.
+
 # Appendix
 ## Calculating
 
