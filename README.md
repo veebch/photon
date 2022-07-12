@@ -54,6 +54,7 @@ The Rotary Encoder:
 |   7        | DT             |
 |   8       | SW             |
 
+Switches:
 
 | [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | Switches |
 |-----------|----------------|
