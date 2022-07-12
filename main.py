@@ -2,6 +2,7 @@
 # Assumes a linear respose in brightness, calibrates from two values in a text file
 # First prototype is using an OLED, rotary encoder and a photodiode
 # The display uses drivers made by Peter Hinch [link](https://github.com/peterhinch/micropython-nano-gui)
+# Tested on pico running Pimoroni uf2 pimoroni-pico-v1.19.0-micropython.uf2
   
 # Released under the GPL 3.0
 
@@ -18,7 +19,7 @@ import math
 import gc
 import pimoroni_i2c
 import breakout_bh1745
-# Display setup
+# OLED Display setup
 from drivers.ssd1351.ssd1351_16bit import SSD1351 as SSD
 
 def splash(string):
@@ -31,13 +32,13 @@ def splash(string):
     ssd.show()
     utime.sleep(.5)
     for x in range(11):
-        wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(55,55,55),bgcolor=0, verbose=False)
+        wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(55-x,55-x,55-x),bgcolor=0, verbose=False)
         CWriter.set_textpos(ssd, 0,0)
         wri.printstring('{:.0f}%'.format(percentage))
         wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(25*x,25*x,25*x),bgcolor=0, verbose=False)
         CWriter.set_textpos(ssd, 55,25)
         wri.printstring(string)
-        wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(50,50,0),bgcolor=0, verbose=False )
+        wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(50-x,50-x,0),bgcolor=0, verbose=False )
         CWriter.set_textpos(ssd, 90,25)
         wri.printstring('veeb.ch/')
         ssd.show()
@@ -45,9 +46,9 @@ def splash(string):
     return
 
 
-PINS_BREAKOUT_GARDEN = {"sda": 0, "scl": 1}
+LIGHTSENSOR = {"sda": 0, "scl": 1}
 
-I2C = pimoroni_i2c.PimoroniI2C(**PINS_BREAKOUT_GARDEN)
+I2C = pimoroni_i2c.PimoroniI2C(**LIGHTSENSOR)
 bh1745 = breakout_bh1745.BreakoutBH1745(I2C)
 
 bh1745.leds(False)
@@ -62,13 +63,7 @@ modes= ["AmbientShutterSpeed","AmbientAperture"]
 
 fstops = list(reversed(fstops))
 
-#
-#  Invert 2x2 matrix  A = a  b  to solve the simultaneous equation for the straight line
-#                         c  d
-#
-
-
-# Other Parameters
+# Parameters
 additiveerror = -2.2                 # An additive fudge factor for EV to adjust brightness...need to assess whether this makes sense
 height = 128                         # the height of the oled
 pdc = Pin(20, Pin.OUT, value=0)
@@ -104,7 +99,7 @@ spi = SPI(0,
 ssd = SSD(spi, pcs, pdc, prst, height)  # Create a display instance
 ssd.fill(0)
 
-splash('incident')
+splash('photon')
 # define encoder pins and mode switch pin
 
 switch = Pin(15, mode=Pin.IN, pull = Pin.PULL_UP)     # inbuilt switch on the rotary encoder, ACTIVE LOW
@@ -160,7 +155,7 @@ def encoder(pin):
     return 
     
 
-# interrupt handler function (IRQ) for SW (switch) pin
+# interrupt handler function (IRQ) for measure button
 def button(pin):
     # get global variable
     global button_last_state
@@ -175,6 +170,7 @@ def button(pin):
         print(lastmeasure)
     return
 
+# interrupt handler function (IRQ) for SW (switch) pin
 def modebutton(pin):
     # get global variable
     global modebutton_last_state
@@ -191,7 +187,7 @@ def modebutton(pin):
         modebutton_last_state = modebutton_current_state
     return
 
-# interrupt handler function (IRQ) for SW (switch) pin
+# interrupt handler function (IRQ) for iso switch
 def isobutton(pin):
     # get global variable
     global isobutton_last_state
@@ -216,7 +212,7 @@ def sensorread():
     return rgb_clamped[0],rgb_clamped[1],rgb_clamped[2],EV
 
 
-# Screen to display on OLED
+# Display on OLED
 def displaynum(aperture,speed,iso,mode, isoadjust, lastmeasure, red, green, blue):
     #delta=-lastmeasure+sensorread()
     if mode=="AmbientAperture":
@@ -258,10 +254,6 @@ def displaynum(aperture,speed,iso,mode, isoadjust, lastmeasure, red, green, blue
     ssd.show()
     return
 
-def beanaproblem(string):
-    refresh(ssd, True)  # Clear any prior image
-    utime.sleep(2)
-
 def otherindex(index, isoindex, mode, lastmeasure):
     Eiso= lastmeasure + math.log2(float(isonum[isoindex]/100))
     if mode=="AmbientAperture":
@@ -291,14 +283,13 @@ outB.irq(trigger = Pin.IRQ_RISING | Pin.IRQ_FALLING ,
 switch.irq(trigger = Pin.IRQ_FALLING ,
            handler = button)
 
-# attach interrupt to the switch pin ( SW pin of encoder module )
+# attach interrupt to the switch pin ( SW pin of mode switch )
 modeswitch.irq(trigger = Pin.IRQ_FALLING ,
            handler = modebutton)
 
-# attach interrupt to the switch pin ( SW pin of encoder module )
+# attach interrupt to the switch pin ( SW pin of iso switch )
 isoswitch.irq(trigger = Pin.IRQ_FALLING ,
            handler = isobutton)
-
 
 
 # Main Logic
@@ -307,8 +298,6 @@ pin=0
 counter= 0
 lastupdate = utime.time()  
 refresh(ssd, True)  # Initialise and clear display.
-
-lasterror = 0
 # The Tweakable values that will help tune for our use case. TODO: Make accessible via menu on OLED
 output=0
 mode=modes[1]
