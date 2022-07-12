@@ -2,7 +2,7 @@
 
 # Photon: an open-source lightmeter 
 
-Photon reproduces the functionality of more expensive tools, using a few inexpensive/readily available parts. There is soldering involved, but don't let that put you off.
+Photon reproduces the some of the functionality of more expensive tools, using a few inexpensive/readily available parts. It measures light brightness, as well as the Red, Green and Blue components of the light. There is soldering involved, but don't let that put you off.
 
 # Background
 
