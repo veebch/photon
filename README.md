@@ -59,7 +59,20 @@ The Rotary Encoder connects to the GPIO:
 
 # Software installation
 
-Download a `uf2` image from [pimoroni](https://github.com/pimoroni/pimoroni-pico/releases). Copy the contents to the repository using ampy.
+Download a `uf2` image from [pimoroni](https://github.com/pimoroni/pimoroni-pico/releases). 
+
+Clone this repository to your computer using the commands (from a terminal)
+
+```
+cd ~
+git clone https://github.com/veebch/photon.git
+cd photon
+```
+
+Copy the contents to the repository using ampy using the command.
+```
+
+```
 
 # Calculating
 
