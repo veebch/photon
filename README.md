@@ -8,7 +8,8 @@ An open-source light-meter that reproduces the functionality of more expensive t
 
 An incident light-meter is an essential tool in photography. The sophisticated computation baked-in to modern cameras devotes a lot of effort guessing 'how much light is falling on the subject?". If you have the option of getting to the subject and taking a reading, everything becomes a lot easier. 
 
-# Assembly
+# Components
+
 - Raspberry Pi Pico                     
 - Rotary encoder              (adjust settings and measure)
 - 2x Momentary switch         (keyboard switch and a 6x6mm microswitch to measure and set iso adjust mode respectively)
@@ -17,7 +18,11 @@ An incident light-meter is an essential tool in photography. The sophisticated c
 - Wires galore
 - PIR Dome
 
+# Assembly
+
 ## Hardware
+
+
 
 Solder the power shim to the pico. Connect the Lipo battery to the shim. Then connect the rest of the components as follows:
 
