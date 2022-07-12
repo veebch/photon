@@ -56,7 +56,7 @@ The Rotary Encoder connects to the GPIO:
 
 
 
-# Software
+## Software
 
 Download a `uf2` image from [pimoroni](https://github.com/pimoroni/pimoroni-pico/releases). 
 
@@ -70,7 +70,10 @@ cd photon
 
 Copy the contents to the repository using ampy using the command.
 ```
-
+sudo ampy -p /dev/ttyACM0 put drivers
+sudo ampy -p /dev/ttyACM0 put gui
+sudo ampy -p /dev/ttyACM0 put color_setup.py
+sudo ampy -p /dev/ttyACM0 put main.py
 ```
 
 # Appendix
