@@ -2,7 +2,7 @@
 
 # Photon: an open-source lightmeter 
 
-Photon reproduces the some of the functionality of more expensive tools, using a few inexpensive/readily available parts. It measures light brightness, as well as the Red, Green and Blue components of the light. There is soldering involved, but don't let that put you off.
+Photon reproduces the some of the functionality of more expensive tools, using a few inexpensive/readily available parts. It measures light brightness, as well as the red, green and blue components of the light. There is soldering involved, but don't let that put you off.
 
 # Background
 
@@ -82,6 +82,12 @@ sudo ampy -p /dev/ttyACM0 put main.py
 ```
 
 Done! All the needed files should be on the pico and when you disconnect and power it on using the button on the power shim, it will autorun the script.
+
+# Contributing to the Code
+
+This code works, but is inelegant. If you look at this, find it interesting, and know you can make it better then please fork the repository and use a feature branch. Pull requests are welcome and encouraged.
+
+If you have some photography expertise that you think could be embedded in the code then raise an issue on GitHub or mail us.
 
 # Appendix
 ## Derived formulas
