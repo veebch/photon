@@ -47,9 +47,9 @@ The Rotary Encoder connects to the GPIO as follows:
 
 
 
-# Sodtware installation
+# Software installation
 
-Download a `uf2` image from [pimoroni](https://github.com/pimoroni/pimoroni-pico/releases)
+Download a `uf2` image from [pimoroni](https://github.com/pimoroni/pimoroni-pico/releases). Copy the contents to the repository using ampy.
 
 # Calculating
 
