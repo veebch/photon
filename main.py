@@ -27,7 +27,7 @@ def splash(string):
     CWriter.set_textpos(ssd, 90,25)
     wri.printstring('veeb.ch/')
     ssd.show()
-    utime.sleep(.5)
+    utime.sleep(.3)
     for x in range(11):
         wri = CWriter(ssd,freesans20, fgcolor=SSD.rgb(55-x,55-x,55-x),bgcolor=0, verbose=False)
         CWriter.set_textpos(ssd, 0,0)
@@ -39,7 +39,7 @@ def splash(string):
         CWriter.set_textpos(ssd, 90,25)
         wri.printstring('veeb.ch/')
         ssd.show()
-    utime.sleep(2)
+    utime.sleep(.5)
     return
 
 # interrupt handler function (IRQ) for CLK and DT pins
@@ -265,17 +265,16 @@ outA_last = outA.value() # lastStateCLK
 
 
 # Main Logic
-# Values for Fstop, Shutter Speed and ISO
-fstops= [.6,.7,.8,.9,1,1.1,1.3,1.4,1.6,1.8,2,2.2,2.5,2.8,3.2,3.6,4,4.5,5,5.6,6.3,7.1,8,9,10,11,13,14,16,18,20,22,25,29,32,36,40,45,51,57,64,72,81,90,102,114,128,144,161]
+# Values for Fstop, Shutter Speed and ISO (ascending brightness)
+fstops= [161, 144, 128, 114, 102, 90, 81, 72, 64, 57, 51, 45, 40, 36, 32, 29, 25, 22, 20, 18, 16, 14, 13, 11, 10, 9, 8, 7.1, 6.3, 5.6, 5, 4.5, 4, 3.6, 3.2, 2.8, 2.5, 2.2, 2, 1.8, 1.6, 1.4, 1.3, 1.1, 1, 0.9, 0.8, 0.7, 0.6]
 sspeed= ["(1/ 8000)","(1/ 6400)","(1/ 5000)","(1/ 4000)","(1/ 3200)","(1/ 2500)","(1/ 2000)","(1/ 1600)","(1/ 1250)","(1/ 1000)","(1/ 800)","(1/ 640)","(1/ 500)","(1/ 400)","(1/ 320)","(1/ 250)","(1/ 200)", "(1/ 160)","(1/ 125)","(1/ 100)","(1/ 80)","(1/ 60)","(1/ 50)","(1/ 40)","(1/ 30)","(1/ 25)","(1/ 20)","(1/ 15)","(1/ 13)","(1/ 10)","(1/ 8)","(1/ 6)","(1/ 5)","(1/ 4)","0.3","0.4","0.5","0.6","0.8","1","1.3","1.6","2","2.5","3.2","4","5","6","8","10","13","15","20","25","30","40","50","60"]
 isonum= [3,4,5,6,8,10,12,16,20,25,32,40,50,64,80,100,125,160,200,250,320,400,500,640,800,1000,1250,1600,2000,2500,3200, 4000, 5000,6400,8000]
 modes= ["AmbientShutterSpeed","AmbientAperture"]
 
-fstops = list(reversed(fstops))      # this is a fix for the fact that we want all arrays in ascending 'brightness'
 additiveerror = -2.2                 # A stop adjustment for EV to adjust brightness. (addidtive implies a proportional relationship between brightness and lux, check maths)
-mode=modes[1]                        # AmbientAperture
-apertureindex = 26                   # f8
-isoindex = 15                        # iso 100
+mode=modes[1]                        # Default: AmbientAperture mode
+apertureindex = 26                   # Default: f/8 ('f8 and be there' - Weegee)
+isoindex = 15                        # Default: ISO 100
 isoadjust=False
 pin=0
 counter= 0
