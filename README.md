@@ -1,8 +1,8 @@
 [![YouTube Channel Views](https://img.shields.io/youtube/channel/views/UCz5BOU9J9pB_O0B8-rDjCWQ?label=YouTube&style=social)](https://www.youtube.com/channel/UCz5BOU9J9pB_O0B8-rDjCWQ)
 
-# Photon - an open-source light-meter 
+# Photon: an open-source lightmeter 
 
-An open-source light-meter that reproduces the functionality of more expensive tools, using a few inexpensive/readily available parts. There is soldering involved, but don't let that put you off.
+Photon reproduces the functionality of more expensive tools, using a few inexpensive/readily available parts. There is soldering involved, but don't let that put you off.
 
 # Background
 
