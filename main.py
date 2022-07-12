@@ -151,7 +151,7 @@ def displaynum(aperture,speed,iso,mode, isoadjust, lastmeasure, red, green, blue
     wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(255,255,0),bgcolor=0, verbose=False)
     wrimem.printstring(str(iso))
     CWriter.set_textpos(ssd,105,0)
-    wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(red,green,blue),bgcolor=0, verbose=False)
+    wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(red,green,blue),bgcolor=0, verbose=False) # Colour of EV Number is the RGB code from the sensor
     wrimem.printstring(str(round(lastmeasure,1))+"EV") 
     if isoadjust:
         box=SSD.rgb(255,0,0)
