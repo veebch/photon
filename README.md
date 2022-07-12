@@ -4,11 +4,11 @@
 
 Photon reproduces the some of the functionality of more expensive tools, using a few inexpensive/readily available parts. It measures light brightness, as well as the red, green and blue components of the light. There is soldering involved, but don't let that put you off.
 
-# Background
+## Background
 
 An incident light-meter is an essential tool in photography. The sophisticated computation baked-in to modern cameras devotes a lot of effort guessing 'how much light is falling on the subject?". If you have the option of getting to the subject and taking a reading, everything becomes a lot easier. 
 
-# Components
+## Components
 
 - Raspberry Pi Pico       
 - LiPo Power shim             ([Pimoroni](https://shop.pimoroni.com/products/pico-lipo-shim?variant=32369543086163)... Sheffield massive represent)
