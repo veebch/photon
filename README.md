@@ -13,7 +13,7 @@ An incident light-meter can be an essential tool in photography (especially film
 - Raspberry Pi Pico       
 - LiPo Power shim             ([Pimoroni](https://shop.pimoroni.com/products/pico-lipo-shim?variant=32369543086163)... Sheffield massive represent)
 - Rotary encoder              (adjust settings and measure)
-- Two momentary switches       (1x keyboard switch and 1x 6x6mm microswitch to measure and set iso adjust mode respectively)
+- Two momentary switches       (1x keyboard switch and 1x 6x6mm microswitch to measure light and set iso adjust mode respectively)
 - Light Sensor                (Pimoroni BH1745)             
 - LiPo battery
 - Wires galore
