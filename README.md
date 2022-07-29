@@ -85,7 +85,7 @@ Done! All the needed files should be on the pico and when you disconnect and pow
 
 # Contributing to the Code
 
-This code works, but is inelegant. If you look at this, find it interesting, and know you can make it better then please fork the repository and use a feature branch. Pull requests are welcome and encouraged.
+If you look at this, find it interesting, and know you can make it better then please fork the repository and use a feature branch. Pull requests are welcome and encouraged.
 
 If you have some photography expertise that you think could be embedded in the code then raise an issue on GitHub or mail us.
 
