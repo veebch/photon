@@ -83,7 +83,7 @@ sudo ampy -p /dev/ttyACM0 put main.py
 
 Done! All the needed files should be on the pico and when you disconnect and power it on using the button on the power shim, it will autorun the script.
 
-# Contributing to the Code
+# Contributing to the code
 
 If you look at this, find it interesting, and know you can make it better then please fork the repository and use a feature branch. Pull requests are welcome and encouraged.
 
