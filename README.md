@@ -94,7 +94,7 @@ If you have some photography expertise that you think could be embedded in the c
 
 The simple calculations that lead to a reading are based on the Wikipedia entry on [exposure value](https://en.wikipedia.org/wiki/Exposure_value).
 
-The ADC value measured by the Pico is converted to an exposure value ($$E_v$$) by using a fitted line that gives exposure value as a function of the ADC value. This exposure value is then adjusted to an Exposure value for the chosen ISO ($$E_{ISO}$$) using
+The ADC value measured by the Pico is converted to an exposure value ( $$E_v$$ ) by using a fitted line that gives exposure value as a function of the ADC value. This exposure value is then adjusted to an Exposure value for the chosen ISO ( $$E_{ISO}$$ ) using
 
 $$E_{ISO}=E_v + \log_2 {{ISO}\over{100}}.$$
 
