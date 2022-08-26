@@ -16,8 +16,8 @@ An incident light-meter can be an essential tool in photography (especially film
 - Two momentary switches       (1x keyboard switch and 1x 6x6mm microswitch to measure light and set iso adjust mode respectively)
 - Light Sensor                (Pimoroni BH1745)             
 - LiPo battery
-- Wires galore
-- PIR Dome
+
+
 
 # Assembly
 
