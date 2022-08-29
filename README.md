@@ -63,7 +63,7 @@ Solder the power shim to the pico. Connect the Lipo battery to the shim. Then co
 
 ## Software
 
-Download a `uf2` image from the [Pimoroni github repository](https://github.com/pimoroni/pimoroni-pico/releases) and install it on the Pico according to the instructions. You need to use the Pimoroni image to be able to use Pimoroni drivers.
+Download a `uf2` image from the [Pimoroni github repository](https://github.com/pimoroni/pimoroni-pico/releases) and install it on the Pico according to the instructions. You need to use the Pimoroni image to be able to use Pimoroni drivers for the light sensor.
 
 Clone this repository to your computer using the commands (from a terminal)
 
