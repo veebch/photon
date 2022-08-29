@@ -81,7 +81,7 @@ sudo ampy -p /dev/ttyACM0 put color_setup.py
 sudo ampy -p /dev/ttyACM0 put main.py
 ```
 
-Done! All the needed files should be on the pico and when you disconnect and power it on using the button on the power shim, it will autorun the script.
+Done! All the required files should now be on the Pico. When you disconnect from USB and power on using the button on the power shim the script will autorun.
 
 # Contributing to the code
 
