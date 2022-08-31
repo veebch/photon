@@ -29,8 +29,8 @@ Solder the power shim to the pico. Connect the Lipo battery to the shim. Then co
 
 | [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | BH1745 |
 |-----------|------|
-|   0       | SDA  |
-|   1      | SCL  |
+|   4       | SDA  |
+|   5      | SCL  |
 
 
 ### OLED
@@ -57,7 +57,7 @@ Solder the power shim to the pico. Connect the Lipo battery to the shim. Then co
 | [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | Switches |
 |-----------|----------------|
 |   15       |       Measure      |
-|   13       |       ISO     |
+|   22       |       ISO     |
 
 
 
