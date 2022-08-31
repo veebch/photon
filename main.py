@@ -182,7 +182,7 @@ def otherindex(index, isoindex, mode, lastmeasure):
     
 # Hardware ################################################################################################
 try:
-    LIGHTSENSOR = {"sda": 0, "scl": 1}
+    LIGHTSENSOR = {"sda": 4, "scl": 5}
     I2C = pimoroni_i2c.PimoroniI2C(**LIGHTSENSOR)
     bh1745 = breakout_bh1745.BreakoutBH1745(I2C)
     bh1745.leds(False)
@@ -197,7 +197,7 @@ psck = Pin(18)                                        # OLED SCK
 pmosi = Pin(19)                                       # OLED MOSI
 switch = Pin(15, mode=Pin.IN, pull = Pin.PULL_UP)     # inbuilt switch on the rotary encoder, ACTIVE LOW
 modeswitch = Pin(8, mode=Pin.IN, pull = Pin.PULL_UP)  # 'mode' switch, the additional momentary switch
-isoswitch = Pin(13, mode=Pin.IN, pull = Pin.PULL_UP)  # 'iso' switch, the additional momentary switch
+isoswitch = Pin(22, mode=Pin.IN, pull = Pin.PULL_UP)  # 'iso' switch, the additional momentary switch
 outA = Pin(6, mode=Pin.IN)                            # Pin CLK of encoder
 outB = Pin(7, mode=Pin.IN)                            # Pin DT of encoder
 ledPin = Pin(25, mode = Pin.OUT, value = 0)           # Onboard led on GPIO 25
@@ -322,3 +322,4 @@ while True:
     isobutton_last_state = False  # see above
     gc.collect()                  # force garbage collect
     now = utime.time()
+
