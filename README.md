@@ -117,3 +117,5 @@ End of maths.
 
 - Power management
 - Flash measurement (add integrator circuit?)
+- Assembly Instructions
+- Calibration via GUI
