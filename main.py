@@ -281,7 +281,8 @@ try:
 except:
     print('no isoindex file..... using default')
     isoindex = 15                        # Default: ISO 100
-additiveerror = -2.2                 # A stop adjustment for EV to adjust brightness. (addidtive implies a proportional relationship between brightness and lux, check maths)
+additiveerror = -3.5                 # A stop adjustment for EV to adjust brightness. Tweak this to calibrate if needed
+                                     # (additive implies a proportional relationship between brightness and lux, check maths)
 mode=modes[1]                        # Default: AmbientAperture mode
 apertureindex = 26                   # Default: f/8 ('f8 and be there' - Weegee)
 isoadjust=False
