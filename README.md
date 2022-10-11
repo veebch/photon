@@ -114,6 +114,9 @@ where $t$ is shutter speed and $N$ is f-stop. The value is then rounded to the n
 
 End of maths.
 
+## Video
+
+https://youtu.be/dGpkUIxDetQ
 
 ## To Do
 
