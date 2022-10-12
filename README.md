@@ -14,7 +14,8 @@ An incident light-meter can be an essential tool in photography (especially film
 
 ## Components
 
-- Raspberry Pi Pico       
+- Raspberry Pi Pico
+- OLED Screen                 (Waveshare)
 - LiPo Power shim             ([Pimoroni](https://shop.pimoroni.com/products/pico-lipo-shim?variant=32369543086163)... Sheffield massive represent)
 - Rotary encoder              (adjust settings and change priority mode)
 - Two momentary switches       (1x keyboard switch and 1x 6x6mm microswitch to measure light and set iso adjust mode respectively)
