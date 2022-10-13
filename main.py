@@ -1,6 +1,6 @@
 # main.py - a script for making a light meter, running using a Raspberry Pi Pico
 # Assumes a linear respose in brightness, calibrates from two values in a text file
-# First prototype is using an OLED, rotary encoder and a photodiode
+# First prototype is using an OLED, rotary encoder and a pimoroni light sensor, if a strobe mode is added. This may need to change.
 # The display uses drivers made by Peter Hinch [link](https://github.com/peterhinch/micropython-nano-gui)
 # Tested on pico running Pimoroni uf2 pimoroni-pico-v1.19.0-micropython.uf2
   
