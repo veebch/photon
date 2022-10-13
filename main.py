@@ -118,7 +118,7 @@ def sensorread():
     print("Clamped: {}, {}, {}, {}".format(*rgb_clamped))
     print("Bright="+str(brightness))
     try:
-        EV = math.log2(brightness/2.5)+additiveerror
+        EV = math.log2(brightness/2.5)+evcorrection
     except:
         EV = -10
     return rgb_clamped[0],rgb_clamped[1],rgb_clamped[2],EV
@@ -281,7 +281,7 @@ try:
 except:
     print('no isoindex file..... using default')
     isoindex = 15                        # Default: ISO 100
-additiveerror = -3.5                 # A stop adjustment for EV to adjust brightness. Tweak this to calibrate if needed
+evcorrection = 0                     # A stop adjustment for EV. Tweak this to calibrate if needed
                                      # (additive implies a proportional relationship between brightness and lux, check maths)
 mode=modes[1]                        # Default: AmbientAperture mode
 apertureindex = 26                   # Default: f/8 ('f8 and be there' - Weegee)
@@ -331,4 +331,3 @@ while True:
     isobutton_last_state = False  # see above
     gc.collect()                  # force garbage collect
     now = utime.time()
-
