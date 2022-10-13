@@ -28,7 +28,7 @@ An incident light-meter can be an essential tool in photography (especially film
 
 ## Hardware
 
-Solder the power shim to the pico. Connect the Lipo battery to the shim. Then connect the rest of the components to the GPIO pins as follows.
+Solder the power shim to the pico. Connect the Lipo/LiIon battery to the shim. Then connect the rest of the components to the GPIO pins as follows.
 
 ### Light Sensor
 
@@ -65,6 +65,7 @@ Solder the power shim to the pico. Connect the Lipo battery to the shim. Then co
 |   22       |       ISO     |
 
 
+Once you've tested that things are working, squeeze the parts into an enclosure. If you have access to a 3D printer, there are stl files in the `cases` directory.
 
 ## Software
 
