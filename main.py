@@ -127,7 +127,8 @@ def sensorread():
 
 # Display on OLED
 def displaynum(aperture,speed,iso,mode, isoadjust, lastmeasure, red, green, blue):
-    #delta=-lastmeasure+sensorread()
+    # Calculate EV based on ISO for display
+    Eiso= lastmeasure + math.log2(float(iso/100))
     if mode=="AmbientAperture":
         textA=SSD.rgb(0,255,0)
         textT=SSD.rgb(255,255,255)
@@ -156,7 +157,7 @@ def displaynum(aperture,speed,iso,mode, isoadjust, lastmeasure, red, green, blue
     wrimem.printstring(str(iso))
     CWriter.set_textpos(ssd,105,0)
     wrimem = CWriter(ssd,freesans20, fgcolor=SSD.rgb(red,green,blue),bgcolor=0, verbose=False) # Colour of EV Number is the RGB code from the sensor
-    wrimem.printstring(str(round(lastmeasure,1))+"EV") 
+    wrimem.printstring(str(round(Eiso,1))+"EV") 
     if isoadjust:
         box=SSD.rgb(255,0,0)
     else:
@@ -282,7 +283,7 @@ try:
 except:
     print('no isoindex file..... using default')
     isoindex = 15                        # Default: ISO 100
-evcorrection = 0                     # A stop adjustment for EV. Tweak this to calibrate if needed
+evcorrection = -3                    # A stop adjustment for EV. Set using greycard and Nikond850
                                      # (additive implies a proportional relationship between brightness and lux, check maths)
 mode=modes[1]                        # Default: AmbientAperture mode
 apertureindex = 26                   # Default: f/8 ('f8 and be there' - Weegee)
