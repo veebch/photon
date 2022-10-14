@@ -118,7 +118,7 @@ def sensorread():
     print("Clamped: {}, {}, {}, {}".format(*rgb_clamped))
     print("Bright="+str(brightness))
     try:
-        EV = math.log(brightness/calibrationconst)/math.log(2)+evcorrection
+        EV = math.log2(brightness/calibrationconst)+evcorrection
         print(EV)
     except:
         EV = -10
@@ -285,7 +285,7 @@ except:
     isoindex = 15                        # Default: ISO 100
 evcorrection = 0                   # A stop adjustment for EV. Set using greycard and Nikond850
                                      # (additive implies a proportional relationship between brightness and lux, check maths)
-calibrationconst=18
+calibrationconst=15
 mode=modes[1]                        # Default: AmbientAperture mode
 apertureindex = 26                   # Default: f/8 ('f8 and be there' - Weegee)
 isoadjust=False
