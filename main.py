@@ -118,7 +118,8 @@ def sensorread():
     print("Clamped: {}, {}, {}, {}".format(*rgb_clamped))
     print("Bright="+str(brightness))
     try:
-        EV = math.log2(brightness/2.5)+evcorrection
+        EV = math.log(brightness/2.5)/math.log(2)+evcorrection
+        print(EV)
     except:
         EV = -10
     return rgb_clamped[0],rgb_clamped[1],rgb_clamped[2],EV
@@ -331,3 +332,5 @@ while True:
     isobutton_last_state = False  # see above
     gc.collect()                  # force garbage collect
     now = utime.time()
+
+
