@@ -93,11 +93,11 @@ Done! All the required files should now be on the Pico. When you disconnect from
 
 If you look at this, find it interesting, and know you can make it better then please fork the repository and use a feature branch. Pull requests are welcome and encouraged.
 
-1-    Fork it
-2-    Create your feature branch (git checkout -b feature/fooBar)
-3-    Commit your changes (git commit -am 'Add some fooBar')
-4-    Push to the branch (git push origin feature/fooBar)
-5-    Create a new Pull Request
+1.    Fork it
+2.    Create your feature branch (git checkout -b feature/fooBar)
+3.    Commit your changes (git commit -am 'Add some fooBar')
+4.    Push to the branch (git push origin feature/fooBar)
+5.    Create a new Pull Request
 
 
 If you have some photography expertise that you think could be embedded in the code then raise an issue on GitHub or mail us.
