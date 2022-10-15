@@ -10,16 +10,19 @@ Photon reproduces the some of the functionality of more expensive tools, using a
 
 ## Background
 
-An incident light-meter can be an essential tool in photography (especially film photography with old cameras). The sophisticated computation baked-in to modern cameras devotes a lot of effort guessing 'how much light is falling on the subject?". If you have the option of getting to the subject and taking a reading, no guessing is required and everything becomes a lot easier. 
+An incident light-meter can be an essential tool in photography (especially film photography with old cameras). The sophisticated computation baked-in to modern cameras devotes a lot of effort guessing 'how much light is falling on the subject?". If you have the option of getting to the subject and taking a reading, no guessing is required and everything becomes a lot easier. A more in-depth description in the video below:
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/xju3yHBka7Q/0.jpg)](https://www.youtube.com/watch?v=xju3yHBka7Q)
+
 
 ## Components
 
 - Raspberry Pi Pico
-- OLED Screen                 (Waveshare 120x120 full colour)
-- LiPo Power shim             ([Pimoroni](https://shop.pimoroni.com/products/pico-lipo-shim?variant=32369543086163)... Sheffield massive represent)
+- OLED Screen                 ([Waveshare 128x128 full colour](https://www.amazon.de/-/en/gp/product/B07DB5YFGW/ref=ppx_yo_dt_b_asin_title_o08_s00?ie=UTF8&psc=1))
+- LiPo Power shim             ([Pimoroni LiPo Pico shim](https://shop.pimoroni.com/products/pico-lipo-shim?variant=32369543086163)
 - Rotary encoder              (adjust settings and change priority mode)
-- Two momentary switches      (1x keyboard switch and 1x 6x6mm microswitch to measure light and set iso adjust mode respectively)
-- Light Sensor                (Pimoroni BH1745)             
+- Two momentary switches      (1x [keyboard switch](https://keyboardsexpert.com/types-of-keyboard-switches/) and 1x 6x6mm microswitch to measure light and set iso adjust mode respectively)
+- Light Sensor                ([Pimoroni BH1745](https://shop.pimoroni.com/products/bh1745-luminance-and-colour-sensor-breakout?variant=12767599755347))             
 - LiPo/LiIon battery
 
 
@@ -89,11 +92,21 @@ sudo ampy -p /dev/ttyACM0 put main.py
 
 Done! All the required files should now be on the Pico. When you disconnect from USB and power on using the button on the power shim the script will autorun.
 
-# Contributing to the code
+## Contributing to the code
 
-If you look at this, find it interesting, and know you can make it better then please fork the repository and use a feature branch. Pull requests are welcome and encouraged.
+If you look at this, find it interesting, and know you can make it better then please fork the repository and use a feature branch. Pull requests are welcome and encouraged... in a nutshell:
 
-If you have some photography expertise that you think could be embedded in the code then raise an issue on GitHub or mail us.
+1.    Fork it
+2.    Create your feature branch (git checkout -b feature/fooBar)
+3.    Commit your changes (git commit -am 'Add some fooBar')
+4.    Push to the branch (git push origin feature/fooBar)
+5.    Create a new Pull Request
+
+If that all looks a bit too programmy, and if you have some photography expertise that you think could be embedded in the code then raise an issue on GitHub or [contact us](https://www.veeb.ch/contact).
+
+## Licence
+
+GNU GENERAL PUBLIC LICENSE Version 3.0
 
 # Appendix
 ## Derived formulas
@@ -115,18 +128,3 @@ $$N = \sqrt{t 2^{ E_{ISO}}}$$
 where $t$ is shutter speed and $N$ is f-stop. The value is then rounded to the nearest nominal value and displayed on the screen.
 
 End of maths.
-
-## Video
-
-A real-world test
-
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/xju3yHBka7Q/0.jpg)](https://www.youtube.com/watch?v=xju3yHBka7Q)
-
-
-
-## To Do
-
-- Power management
-- Flash measurement (add integrator circuit?)
-- Assembly Instructions
-- Calibration via GUI
