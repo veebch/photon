@@ -119,7 +119,7 @@ The simple calculations that lead to a reading are based on the Wikipedia entry 
 
 The brightness value returned by the Pimoroni BH1745 (lx) is converted to an exposure value ( $E_v$ ) for ISO 100. 
 
-$$E_v=\log _2  {lx} \over {C}\,$$
+$$E_v=\log _2  {{lx} \over {C}}$$,
 
 where $C$ is the light meter calibratioin constant.
 
