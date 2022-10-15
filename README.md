@@ -81,13 +81,11 @@ git clone https://github.com/veebch/photon.git
 cd photon
 ```
 
-Copy the contents to the repository using [ampy](https://pypi.org/project/adafruit-ampy/) and the commands.
-
 Check the port of the pico with the command
 ```
 python -m serial.tools.list_ports
 ```
-Now, using the port path.... in our case `/dev/ttyACMO`
+Now, using the port path (in our case `/dev/ttyACMO`) copy the contents to the repository using [ampy](https://pypi.org/project/adafruit-ampy/) and the commands.
 
 ```
 sudo ampy -p /dev/ttyACM0 put drivers
