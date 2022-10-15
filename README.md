@@ -113,7 +113,7 @@ If that all looks a bit too programmy, and if you have some photography expertis
 GNU GENERAL PUBLIC LICENSE Version 3.0
 
 # Appendix
-## Derived formulas
+## Calculation of Values
 
 The simple calculations that lead to a reading are based on the Wikipedia entry on [exposure value](https://en.wikipedia.org/wiki/Exposure_value).
 
@@ -137,4 +137,3 @@ $$N = \sqrt{t 2^{ E_{ISO}}}$$
 
 where $t$ is shutter speed and $N$ is f-stop. The value is then rounded to the nearest nominal value and displayed on the screen.
 
-End of maths.
