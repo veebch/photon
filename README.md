@@ -121,7 +121,7 @@ The brightness value returned by the Pimoroni BH1745 (lx) is converted to an exp
 
 $$E_v=\log _2  {\mathrm{lx} \over {C}},$$
 
-where $C$ is the light meter calibratioin constant.
+where $C$ is the light meter calibration constant.
 
 This exposure value is then adjusted to an Exposure value for the chosen ISO ( $E_{ISO}$ ) using
 
