@@ -99,8 +99,7 @@ If you look at this, find it interesting, and know you can make it better then p
 4.    Push to the branch (git push origin feature/fooBar)
 5.    Create a new Pull Request
 
-
-If you have some photography expertise that you think could be embedded in the code then raise an issue on GitHub or mail us.
+If that all looks a bit too programmy, and if you have some photography expertise that you think could be embedded in the code then raise an issue on GitHub or mail us.
 
 ## Licence
 
