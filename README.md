@@ -117,9 +117,9 @@ GNU GENERAL PUBLIC LICENSE Version 3.0
 
 The simple calculations that lead to a reading are based on the Wikipedia entry on [exposure value](https://en.wikipedia.org/wiki/Exposure_value).
 
-The illuminance returned by the Pimoroni BH1745 ( $lx$ ) is converted to an exposure value ( $E_v$ ) for ISO 100. 
+The illuminance returned by the Pimoroni BH1745 ( $L \mathrm{lx}$ ) is converted to an exposure value ( $E_v$ ) for ISO 100. 
 
-$$E_v=\log _2  {{lx} \over {C}},$$
+$$E_v=\log _2  {{L} \over {C}},$$
 
 where $C$ is the light meter calibration constant.
 
