@@ -121,7 +121,7 @@ The [illuminance](https://en.wikipedia.org/wiki/Illuminance) returned by the Pim
 
 $$E_v=\log _2  {{L} \over {C}},$$
 
-where $C$ is the light meter calibration constant.
+where $C$ is the light meter [calibration constant](https://en.wikipedia.org/wiki/Light_meter#Calibration_constants).
 
 This exposure value is then adjusted to an Exposure value for the chosen ISO ( $E_{ISO}$ ) using
 
