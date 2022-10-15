@@ -98,7 +98,7 @@ Done! All the required files should now be on the Pico. When you disconnect from
 
 ## Contributing to the code
 
-If you look at this, find it interesting, and know you can make it better then please fork the repository and use a feature branch. Pull requests are welcome and encouraged.
+If you look at this, find it interesting, and know you can make it better then please fork the repository and use a feature branch. Pull requests are welcome and encouraged... in a nutshell:
 
 1.    Fork it
 2.    Create your feature branch (git checkout -b feature/fooBar)
