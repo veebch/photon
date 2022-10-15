@@ -87,14 +87,13 @@ Check the port of the pico with the command
 ```
 python -m serial.tools.list_ports
 ```
-Now, using the port path.... in our case `**/dev/ttyACMO**`
-
+Now, using the port path.... in our case `/dev/ttyACMO`
 
 ```
-sudo ampy -p **/dev/ttyACM0** put drivers
-sudo ampy -p **/dev/ttyACM0** put gui
-sudo ampy -p **/dev/ttyACM0** put color_setup.py
-sudo ampy -p **/dev/ttyACM0** put main.py
+sudo ampy -p /dev/ttyACM0 put drivers
+sudo ampy -p /dev/ttyACM0 put gui
+sudo ampy -p /dev/ttyACM0 put color_setup.py
+sudo ampy -p /dev/ttyACM0 put main.py
 ```
 
 Done! All the required files should now be on the Pico. When you disconnect from USB and power on using the button on the power shim the script will autorun.
