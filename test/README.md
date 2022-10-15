@@ -1,3 +1,3 @@
 ## Testing
 
-Comparing results to consumer meters and aNikon D850 and a grey card.
+Comparing results with consumer meters and a Nikon D850 and a grey card.
