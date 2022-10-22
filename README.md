@@ -32,7 +32,7 @@ An incident light-meter can be an essential tool in photography (especially film
 
 ## Hardware
 
-Solder the power shim to the pico. Connect the Lipo/LiIon battery to the shim. Then connect the rest of the components to the GPIO pins as follows.
+Solder the power shim to the pico. Connect the Lipo/LiIon battery to the shim. Then connect the rest of the components to the GPIO pins as follows. (VCC and GND are also connected to the pi where needed)
 
 ### Light Sensor
 
@@ -90,8 +90,8 @@ python -m serial.tools.list_ports
 Now, using the port path (in our case `/dev/ttyACMO`) copy the contents to the repository using [ampy](https://pypi.org/project/adafruit-ampy/) and the commands.
 
 ```
-sudo ampy -p /dev/ttyACM0 put drivers
-sudo ampy -p /dev/ttyACM0 put gui
+sudo ampy -p /dev/ttyACM0 put drivers/
+sudo ampy -p /dev/ttyACM0 put gui/
 sudo ampy -p /dev/ttyACM0 put color_setup.py
 sudo ampy -p /dev/ttyACM0 put main.py
 ```
