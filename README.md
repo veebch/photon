@@ -83,7 +83,7 @@ git clone https://github.com/veebch/photon.git
 cd photon
 ```
 
-Check the port of the pico with the command
+Check the port of the pico with the port listing command
 ```
 python -m serial.tools.list_ports
 ```
