@@ -75,7 +75,7 @@ Once you've tested that things are working, squeeze the parts into an enclosure.
 
 Download a `uf2` image from the [Pimoroni github repository](https://github.com/pimoroni/pimoroni-pico/releases) and install it on the Pico according to the instructions. You need to use the Pimoroni image to be able to use Pimoroni drivers for the light sensor.
 
-Clone this repository to your computer using the commands (from a terminal)
+Clone this repository to your computer using the commands (from a terminal):
 
 ```
 cd ~
@@ -83,7 +83,7 @@ git clone https://github.com/veebch/photon.git
 cd photon
 ```
 
-Check the port of the pico with the port listing command
+Check the port of the pico with the port listing command:
 ```
 python -m serial.tools.list_ports
 ```
