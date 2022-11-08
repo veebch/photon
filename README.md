@@ -87,7 +87,7 @@ Check the port of the pico with the command
 ```
 python -m serial.tools.list_ports
 ```
-Now, using the port path (in our case `/dev/ttyACMO`) copy the contents to the repository by installing [ampy](https://pypi.org/project/adafruit-ampy/) and using  and the commands.
+Now, using the port path (in our case `/dev/ttyACM0`) copy the contents to the repository by installing [ampy](https://pypi.org/project/adafruit-ampy/) and using  and the commands:
 
 ```
 ampy -p /dev/ttyACM0 put drivers/
@@ -95,6 +95,7 @@ ampy -p /dev/ttyACM0 put gui/
 ampy -p /dev/ttyACM0 put color_setup.py
 ampy -p /dev/ttyACM0 put main.py
 ```
+(*nb. make sure you are using the right port name, as shown in the port listing command above*)
 
 Done! All the required files should now be on the Pico. When you disconnect from USB and power on using the button on the power shim the script will autorun.
 
