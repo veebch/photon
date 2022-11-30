@@ -14,7 +14,7 @@ There is soldering involved, but don't let that put you off, [it's easy](https:/
 
 An incident light-meter can be an essential tool in photography (especially film photography with old cameras). The sophisticated computation baked-in to modern cameras devotes a lot of effort guessing 'how much light is falling on the subject?". If you have the option of getting to the subject and taking a reading, no guessing is required and everything becomes a lot easier. A more in-depth description in the video below:
 
-[![IMAGE ALT TEXT HERE](images/video.png)](https://www.youtube.com/watch?v=xju3yHBka7Q)
+[![IMAGE ALT TEXT HERE](/images/video.png)](https://www.youtube.com/watch?v=xju3yHBka7Q)
 
 ## Components
 
