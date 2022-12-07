@@ -4,6 +4,9 @@ This case is completely redesigned, but very similar to the original firstframe.
 
 ![Front](front.jpg)
 
+### Author
+- [Frederik Kemner](https://github.com/040medien)
+
 ### These were my requirements:
 - Add a dedicated lumisphere dome and move the [Pimoroni BH1745](https://shop.pimoroni.com/products/bh1745-luminance-and-colour-sensor-breakout?variant=12767599755347) light sensor board inside the case for protection.
 - Make the [Waveshare 128x128 full color](https://www.amazon.de/-/en/gp/product/B07DB5YFGW/ref=ppx_yo_dt_b_asin_title_o08_s00?ie=UTF8&psc=1) display fit without needing to sand off the corners.
