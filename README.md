@@ -69,8 +69,8 @@ Then connect the rest of the components to the GPIO pins as described in the tab
 
 | [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | Switches |
 |-----------|----------------|
-|   15       |       Measure      |
-|   22       |       ISO     |
+|   15       |       Measure (Keyboard Switch)      |
+|   22       |       ISO   (6x6mm switch)  |
 
 
 ### Enclosure
