@@ -73,7 +73,8 @@ Then connect the rest of the components to the GPIO pins as described in the tab
 |   22       |       ISO   (6x6mm switch)  |
 
 
-### Enclosure
+### Enclosure Assembly
+
 Once you've tested that things are working, squeeze the parts into an enclosure. If you have access to a 3D printer, there are stl files in the [cases](/cases) directory.
 
 ## Software
