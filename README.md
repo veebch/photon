@@ -65,7 +65,7 @@ Then connect the rest of the components to the GPIO pins as described in the tab
 |   7        | DT             |
 |   8       | SW             |
 
-### Switches
+### The Two Switches
 
 | [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | Switches |
 |-----------|----------------|
