@@ -48,13 +48,13 @@ Then connect the rest of the components to the GPIO pins as described in the tab
 
 ### OLED
 
-| [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | OLED |
-|-----------|------|
-|   19       | DIN/MOSI  |
-|   18      | CLK/SCK  |
-|   17      | CS  |
-|   20       | DC  |
-|   21      | RST  |
+| [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | OLED | pin number |
+|-----------|------|------|
+|   19       | DIN/MOSI  | 25 | 
+|   18      | CLK/SCK  | 24 |
+|   17      | CS  |  22 |
+|   20       | DC  |  26   |
+|   21      | RST  |   27  |
 
 
 ### Rotary Encoder:
