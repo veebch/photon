@@ -48,7 +48,7 @@ Then connect the rest of the components to the GPIO pins as described in the tab
 
 ### OLED
 
-| [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | OLED | pin number |
+| [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | OLED | Pin Number |
 |-----------|------|------|
 |   19       | DIN/MOSI  | 25 | 
 |   18      | CLK/SCK  | 24 |
