@@ -215,6 +215,7 @@ conversion_factor = 3 * 3.3 / 65535
 full_battery = 4.2                  # these are our reference voltages for a full/empty battery, in volts
 empty_battery = 2.8                 # the values could vary by battery size/manufacturer so you might need to adjust them
 
+utime.sleep(.3)                     # wait until the pico is fully powered up
 voltage = vsys.read_u16() * conversion_factor
 percentage = 100 * ((voltage - empty_battery) / (full_battery - empty_battery))
 if percentage > 100:
