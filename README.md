@@ -22,7 +22,7 @@ An incident light-meter can be an essential tool in photography (especially film
 - OLED Screen                 ([Waveshare 128x128 full colour](https://www.amazon.de/-/en/gp/product/B07DB5YFGW/ref=ppx_yo_dt_b_asin_title_o08_s00?ie=UTF8&psc=1))
 - LiPo Power shim             ([Pimoroni LiPo Pico shim](https://shop.pimoroni.com/products/pico-lipo-shim?variant=32369543086163) - only if you a using a Pi Pico)
 - Rotary encoder              (adjust settings and change priority mode) ([example](https://www.reichelt.com/ch/de/entwicklerboards-drehwinkel-encoder-ky-040-debo-encoder-p282545.html?PROVID=2808))
-- Two momentary switches      (1x [keyboard switch](https://keyboardsexpert.com/types-of-keyboard-switches/) and 1x 6x6mm microswitch to measure light and set iso adjust mode respectively)
+- Two momentary switches      (1x [keyboard switch](https://keyboardsexpert.com/types-of-keyboard-switches/) and 1x **6x6mm** microswitch to measure light and set iso adjust mode respectively)
 - Light Sensor                ([Pimoroni BH1745](https://shop.pimoroni.com/products/bh1745-luminance-and-colour-sensor-breakout?variant=12767599755347))             
 - LiPo/LiIon battery
 
