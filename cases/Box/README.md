@@ -24,11 +24,11 @@ A case made to be as simple and easy to assemble as possible. Good for beginners
 
 - The encoder should be inserted first as the PCB would otherwise block it. Depending on your 3d printer, the encoder cutout may need to be widened. Hold down the encoder using M2 screws and nuts.
 - Header pins were soldered to the mechanical switch and button.
-- The legs for the 6mm button snap into the holes below the encoder.\
+- The legs for the 6mm button snap into the holes below the encoder. Bend the unused legs to keep the button in place. \
   ![6 mm button mount](img/6mm_button_mount.png)
-- The headers for the BH1745 snap into the cutout on top of the case. It may need to be glued down if it doesn't sit properly. Perhaps a screw hole mount can be added to the design in the future.
+- The headers for the BH1745 snap into the cutout on top of the case. It may need to be glued down if it doesn't sit properly. Perhaps a screw hole mount will be added to the design in the future.
 - The MX compatible switch snaps into the hole on the right side.
-- Place the battery between the PCB standoffs, attach it to the Pico and SHIM combo. Then place the PCB on top of the battery and screw it down to the standoffs. Seat the Pico to the headers on the PCB.
+- Place or tape the battery between the PCB standoffs, attach it to the Pico and SHIM combo. Then place the PCB on top of the battery and screw it down to the standoffs. Seat the Pico to the headers on the PCB.
 - I soldered the male jumpers to the PCB, I wouldn't recommend this as it causes the case to barely close.
 - The grooves in the cover are to keep the sides of the box from bowing in.
 - The screen should fit perfectly flush against the cover.
