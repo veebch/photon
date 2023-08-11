@@ -209,7 +209,7 @@ try:
     bh1745 = breakout_bh1745.BreakoutBH1745(I2C)
     bh1745.leds(False)
 except:
-    print("sensor?") # A visual cue that therehas been an issue with the sensor setup
+    print("Check the sensor. An exception occurred") # A visual cue that therehas been an issue with the sensor setup
 
 # Pins Setup
 pdc = Pin(20, Pin.OUT, value=0)                       # OLED DC
