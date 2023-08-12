@@ -67,6 +67,8 @@ Then connect the rest of the components to the GPIO pins as described in the tab
 
 ### The Two Switches
 
+Connect one end of the switch to GND, and the other to:
+
 | [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | Switches |
 |-----------|----------------|
 |   15       |       Measure (Keyboard Switch)      |
