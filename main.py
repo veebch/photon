@@ -220,8 +220,8 @@ pmosi = Pin(19)                                       # OLED MOSI
 switch = Pin(15, mode=Pin.IN, pull = Pin.PULL_UP)     # inbuilt switch on the rotary encoder, ACTIVE LOW
 modeswitch = Pin(8, mode=Pin.IN, pull = Pin.PULL_UP)  # 'mode' switch, the additional momentary switch
 isoswitch = Pin(22, mode=Pin.IN, pull = Pin.PULL_UP)  # 'iso' switch, the additional momentary switch
-outA = Pin(6, mode=Pin.IN)                            # Pin CLK of encoder
-outB = Pin(7, mode=Pin.IN)                            # Pin DT of encoder
+outA = Pin(6, mode=Pin.IN, pull = Pin.PULL_UP)        # Pin CLK of encoder
+outB = Pin(7, mode=Pin.IN, pull = Pin.PULL_UP)        # Pin DT of encoder
 ledPin = Pin(25, mode = Pin.OUT, value = 0)           # Onboard led on GPIO 25
 
 # Power Management
