@@ -4,6 +4,8 @@
 
 [![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/v_e_e_b/)
 
+COMING SOON: [Flash Mode](https://www.veeb.ch/projects/flash-aaahhh-ahhhhhh)
+
 # Photon: an open-source incident light meter 
 
 Photon reproduces the some of the functionality of more expensive tools, using a few inexpensive/readily available parts. Currently it measures ambient light brightness, as well as the red, green and blue components of the light, which might allow White Balance readings in future iterations.
