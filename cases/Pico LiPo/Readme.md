@@ -20,7 +20,7 @@ This case is completely redesigned, but very similar to the original firstframe.
 - In my case I had to add a 1.5 stop correction to the measurement since there is some light loss due to the lumisphere. This is done by changing `evcorrection` to `1.5` in `main.py`.
 
 ### Assembly instructions:
-- You need 4 M2 screws for the top, 4 M2.5 screws for the bottom, 2 M2.5 screws for the microswitch bracket and 2 M2 screws for the lumishpere.
+- You need 4 M2 screws for the top, 4 M3 screws for the bottom, 2 M2.5 screws for the microswitch bracket and 2 M2 screws for the lumishpere.
 - First solder on the wires to the components and then install the microswitch and the lumishpere before everything else. These are tricky. Next the [rotary encoder](https://www.berrybase.de/drehregler/rotary-encoder-mit-breakoutboard) with the connectors facing towards the Pico. I heated the little prong to seat it into the case. I had to bend the connectors and solder on the wires since dupont connectors didn't fit into the case anymore. I used some double sided tape to stick on the battery. The Pico LiPo just slots in and gets held in by the back part.
 - The power button is a bit fiddly. I used a tiny ring of soft insulation foam between it and the case so it doesn't drop down and get jammed.
 - The power button guard has to be glued on. It prevents the meter from accidentally coming on when bumped in your camera bag.

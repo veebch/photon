@@ -10,6 +10,8 @@ Photon reproduces the some of the functionality of more expensive tools, using a
 
 There is soldering involved, but don't let that put you off, [it's easy](https://www.youtube.com/watch?v=Qps9woUGkvI).
 
+COMING SOON: [Flash Mode](https://www.veeb.ch/projects/flash-aaahhh-ahhhhhh)
+
 ## Background
 
 An incident light-meter can be an essential tool in photography (especially film photography with old cameras). The sophisticated computation baked-in to modern cameras devotes a lot of effort guessing 'how much light is falling on the subject?". If you have the option of getting to the subject and taking a reading, no guessing is required and everything becomes a lot easier. A more in-depth description in the video below:
@@ -21,8 +23,8 @@ An incident light-meter can be an essential tool in photography (especially film
 - Raspberry Pi Pico           (or Pico Lipo, so you don't need to add the separate power shim)
 - OLED Screen                 ([Waveshare 128x128 full colour](https://www.amazon.de/-/en/gp/product/B07DB5YFGW/ref=ppx_yo_dt_b_asin_title_o08_s00?ie=UTF8&psc=1))
 - LiPo Power shim             ([Pimoroni LiPo Pico shim](https://shop.pimoroni.com/products/pico-lipo-shim?variant=32369543086163) - only if you a using a Pi Pico)
-- Rotary encoder              (adjust settings and change priority mode)
-- Two momentary switches      (1x [keyboard switch](https://keyboardsexpert.com/types-of-keyboard-switches/) and 1x 6x6mm microswitch to measure light and set iso adjust mode respectively)
+- Rotary encoder              (adjust settings and change priority mode) ([example](https://www.reichelt.com/ch/de/entwicklerboards-drehwinkel-encoder-ky-040-debo-encoder-p282545.html?PROVID=2808))
+- Two momentary switches      (1x [keyboard switch](https://keyboardsexpert.com/types-of-keyboard-switches/) and 1x **6x6mm** microswitch to measure light and set iso adjust mode respectively)
 - Light Sensor                ([Pimoroni BH1745](https://shop.pimoroni.com/products/bh1745-luminance-and-colour-sensor-breakout?variant=12767599755347))             
 - LiPo/LiIon battery
 
@@ -48,13 +50,13 @@ Then connect the rest of the components to the GPIO pins as described in the tab
 
 ### OLED
 
-| [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | OLED |
-|-----------|------|
-|   19       | DIN/MOSI  |
-|   18      | CLK/SCK  |
-|   17      | CS  |
-|   20       | DC  |
-|   21      | RST  |
+| [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | OLED | Pin Number |
+|-----------|------|------|
+|   19       | DIN/MOSI  | 25 | 
+|   18      | CLK/SCK  | 24 |
+|   17      | CS  |  22 |
+|   20       | DC  |  26   |
+|   21      | RST  |   27  |
 
 
 ### Rotary Encoder:
@@ -65,15 +67,18 @@ Then connect the rest of the components to the GPIO pins as described in the tab
 |   7        | DT             |
 |   8       | SW             |
 
-### Switches
+### The Two Switches
+
+Connect one end of the switch to GND, and the other to:
 
 | [Pico GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/bilder/raspberry-pi-pico-gpio.png) | Switches |
 |-----------|----------------|
-|   15       |       Measure      |
-|   22       |       ISO     |
+|   15       |       Measure (Keyboard Switch)      |
+|   22       |       ISO   (6x6mm switch)  |
 
 
-### Enclosure
+### Enclosure Assembly
+
 Once you've tested that things are working, squeeze the parts into an enclosure. If you have access to a 3D printer, there are stl files in the [cases](/cases) directory.
 
 ## Software
