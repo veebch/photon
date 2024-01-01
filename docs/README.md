@@ -11,7 +11,10 @@ When photographing something (we'll call that the **subject**) there are two typ
 - Incident metering, measuring the light **falling** on the subject
 - Reflective metering, measuring the light **reflecting** off the subject
 
-An question you need to ask yourself when using reflective metering is "what the light is reflecting off?". A lump of coal under bright light will reflect more light than a snowball under dim light. Unless you factor this in to your choice of aperture/shutterspeed then you will run into issues with your exposure.
+A question you need to ask yourself when using reflective metering is "what the light is reflecting off?". A lump of coal under bright light will reflect more light than a snowball under dim light. Unless you factor in what the subject *is* to your choice of aperture/shutterspeed then you may run into issues with your exposure.
+
+Incident metering isn't always better, but if you can physically get to where your subject is to take a measurement, and the light conditions are relatively constant (eg portraiture), then it's pretty foolproof.
+
 
 
 
