@@ -6,7 +6,7 @@ This will give you a brief introduction to using your Photon+ as well as the use
 
 ### Incident vs Reflective metering
 
-When photographing something (we'll call that the **subject**) there are two types of light metering:
+When photographing something (we'll call that something the **subject**) there are two types of light metering:
 
 - Incident metering, measuring the light **falling** on the subject
 - Reflective metering, measuring the light **reflecting** off the subject
