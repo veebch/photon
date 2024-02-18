@@ -113,6 +113,11 @@ Done! All the required files should now be on the Pico. When you disconnect from
 
 A tutorial on getting the most out of your new meter is in the [docs](/docs) section. 
 
+## Press
+
+### German 
+- https://heise.de/-9611848
+
 ## Contributing to the code
 
 If you look at this, find it interesting, and know you can make it better then please fork the repository and use a feature branch. Pull requests are welcome and encouraged... in a nutshell:
