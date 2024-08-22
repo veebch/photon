@@ -8,7 +8,7 @@ Photon reproduces the some of the functionality of more expensive tools, using a
 
 There is soldering involved, but don't let that put you off, [it's easy](https://www.youtube.com/watch?v=Qps9woUGkvI).
 
-COMING SOON: [Flash Mode](https://www.veeb.ch/projects/flash-aaahhh-ahhhhhh)
+COMING SOON: Custom sensor with [Flash Mode](https://www.veeb.ch/projects/flash-aaahhh-ahhhhhh)
 
 ## Background
 
