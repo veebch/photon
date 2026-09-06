@@ -26,6 +26,8 @@
 
 import gui.fonts.freesans20 as freesans20
 import gui.fonts.quantico40 as quantico40
+import gui.fonts.font10 as font10
+from battery import percentage_from_voltage
 from gui.core.writer import CWriter
 from gui.core.nanogui import refresh
 from drivers.ssd1351.ssd1351_16bit import SSD1351 as SSD
@@ -182,6 +184,10 @@ def displaynum(aperture,speed,iso,mode, isoadjust, lastmeasure, red, green, blue
     wrimem = CWriter(ssd,freesans20, fgcolor=0,bgcolor=box, verbose=False)
     CWriter.set_textpos(ssd,82,80)
     wrimem.printstring(" iso ")
+    battery_text = '{}%'.format(battery_percentage())
+    battery_writer = CWriter(ssd,font10, fgcolor=SSD.rgb(55,55,55),bgcolor=0, verbose=False)
+    CWriter.set_textpos(ssd, 0, ssd.width - battery_writer.stringlen(battery_text))
+    battery_writer.printstring(battery_text)
     ssd.show()
     return
 
@@ -232,11 +238,12 @@ conversion_factor = 3 * 3.3 / 65535
 full_battery = 4.2                  # these are our reference voltages for a full/empty battery, in volts
 empty_battery = 2.8                 # the values could vary by battery size/manufacturer so you might need to adjust them
 
+def battery_percentage():
+    voltage = vsys.read_u16() * conversion_factor
+    return percentage_from_voltage(voltage, empty_battery, full_battery)
+
 utime.sleep(.3)                     # wait until the pico is fully powered up
-voltage = vsys.read_u16() * conversion_factor
-percentage = 100 * ((voltage - empty_battery) / (full_battery - empty_battery))
-if percentage > 100:
-    percentage = 100
+percentage = battery_percentage()
 
 # setup screen
 height = 128                         # the height of the oled
@@ -352,5 +359,4 @@ while True:
     isobutton_last_state = False  # see above
     gc.collect()                  # force garbage collect
     now = utime.time()
-
 

@@ -91,21 +91,29 @@ git clone https://github.com/veebch/photon.git
 cd photon
 ```
 
-Check the port of the pico with the port listing command:
-```
-python -m serial.tools.list_ports
-```
-Now, using the port path (in our case `/dev/ttyACM0`) copy the contents to the repository by installing [ampy](https://pypi.org/project/adafruit-ampy/) and using  and the commands:
+Connect the Pico with a data-capable USB cable in normal MicroPython mode. On macOS or Linux, prepare the local upload environment once:
 
+```sh
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements-dev.txt
 ```
-ampy -p /dev/ttyACM0 put drivers/
-ampy -p /dev/ttyACM0 put gui/
-ampy -p /dev/ttyACM0 put color_setup.py
-ampy -p /dev/ttyACM0 put main.py
-```
-(*nb. make sure you are using the right port name, as shown in the port listing command above*)
 
-Done! All the required files should now be on the Pico. When you disconnect from USB and power on using the button on the power shim the script will autorun.
+Upload Photon and restart the Pico:
+
+```sh
+.venv/bin/python tools/upload_pico.py
+```
+
+The uploader normally detects the only connected MicroPython board. If more than one serial device is connected, select the Pico explicitly:
+
+```sh
+.venv/bin/python -m mpremote devs
+.venv/bin/python tools/upload_pico.py --port /dev/cu.usbmodem101
+```
+
+Linux port names commonly look like `/dev/ttyACM0`. Close Thonny, serial monitors, and other programs using the Pico before uploading. To inspect the commands without changing the board, add `--dry-run`.
+
+All required files are copied to the Pico, which is then soft-reset so `main.py` starts. It will also autorun after later power cycles.
 
 ## Using the Light Meter 
 
@@ -156,4 +164,3 @@ or
 $$N = \sqrt{t 2^{ E_{ISO}}}$$
 
 where $t$ is shutter speed and $N$ is f-stop. The value is then rounded to the nearest nominal value and displayed on the screen.
-
